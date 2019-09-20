@@ -1,5 +1,7 @@
 {
   "name": "appionic-007",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
