@@ -14,7 +14,7 @@ export const environment = {
  * on performance if an error is thrown.
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
-
+/*
 export const CONEXION_BD = {
   firebase: {
       apiKey: "AIzaSyAd1bVphgVETZZ6mYbh7RxK5yMZ1XJEU_0",
@@ -24,5 +24,18 @@ export const CONEXION_BD = {
       storageBucket: "observatorio-d6ad7.appspot.com",
       messagingSenderId: "133886977164",
       appId: "1:133886977164:web:a949779686bf2390"
+  }      
+};
+*/
+export const CONEXION_BD = {
+  firebase: {
+    apiKey: "AIzaSyDH6oYKzAK5SwMckJTPAVQF-JOuQ7vkwUQ",
+    authDomain: "proionic-007.firebaseapp.com",
+    databaseURL: "https://proionic-007.firebaseio.com",
+    projectId: "proionic-007",
+    storageBucket: "proionic-007.appspot.com",
+    messagingSenderId: "836343510085",
+    appId: "1:836343510085:web:61f97621eb7846dbe4df2c",
+    measurementId: "G-231RSH26DQ"
   }      
 };
