@@ -7,7 +7,7 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from "@angular/fire/auth";
 
-import { CONEXION_BD } from './environment';
+import { CONEXION_BD } from '../environments/environment';
 import { FirebaseService } from './services/firebase.service';
 //import { IonicStorageModule } from '@ionic/storage';
 //import { Firebase } from '@ionic-native/firebase/ngx';
