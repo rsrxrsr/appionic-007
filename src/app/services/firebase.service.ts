@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { AngularFireAuthModule } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,9 @@ export class FirebaseService {
   //-------------------------------------------------------------------------------------------------------------------
   public modelo=[];
   public model=[];
-  public that=this;
   constructor(public afs: AngularFirestore,
-              public storage: AngularFireStorage
-              //public auth: AngularFireAuthModule
+              public storage: AngularFireStorage,
+              public auth: AngularFireAuthModule
               ) {}
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -47,6 +47,7 @@ export class FirebaseService {
   public editarDocumento( coleccion: string, id: string, doc: any){
     //if(id != null)
     //objeto.id = id;
+    console.log("Update",coleccion,id,doc);
     let objeto = Object.assign({}, doc);  
     delete objeto.id;  
   
@@ -304,6 +305,7 @@ public imageUpload(data:any) {
   
   createUser(email, password) {
     console.log('Creando el usuario con email ' + email);  
+    //this.auth  createUserWithEmailAndPassword(email, password)    .then(function (user) {
     this.afs.firestore.app.auth().createUserWithEmailAndPassword(email, password)
     .then(function (user) {
       console.log('¡Creamos al usuario!');

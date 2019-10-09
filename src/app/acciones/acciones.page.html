@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Actividades</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="tema-app">
+  <!-- -->
+  <div *ngIf="this.firebaseService.modelo['acciones'] == 0">
+    <ion-item>No hay acciones.</ion-item>
+  </div>
+  <!-- -->
+  <ion-grid>
+    <ion-row no-padding class="hdr">
+      <ion-col>
+        Tipo
+      </ion-col>
+      <ion-col>
+        Acción
+      </ion-col>
+      <ion-col>
+        Fecha Alta
+      </ion-col>
+      <ion-col>
+        Fecha Fin Plan
+      </ion-col>
+      <ion-col>
+        % Avance
+      </ion-col>
+      <ion-col>
+      </ion-col>     
+    </ion-row>
+    <div *ngFor="let item of this.firebaseService.modelo['acciones'];even as isEven" (click)="selectRow($event, item)" text-wrap>
+      <ion-row no-padding [ngClass]="isEven? 'even' : 'odd'" class="pointer">            
+        <ion-col>
+          {{ item.tipo }}
+        </ion-col>
+        <ion-col>
+          {{ item.accion }}
+        </ion-col>
+        <ion-col>
+          {{ item.fhAlta }}
+        </ion-col>
+        <ion-col>
+            {{ item.fhFinPlan }}
+        </ion-col>
+        <ion-col>
+          {{ item.avance }}
+      </ion-col>
+      <ion-col>
+          <ion-icon>
+              <ion-icon name="eye" item-start title="Ver Detalle"></ion-icon>
+          </ion-icon>
+        </ion-col>     
+        </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>

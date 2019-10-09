@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>    
+    <ion-title>Actividad</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="tema-app">
+    <div padding-horizontal text-center >
+        <img src="../../assets/imgs/text.png" alt="Observador ciudadano">
+    </div>
+  <ion-grid>  
+    <ion-row size-lg>
+      <ion-col col-2 size-lg></ion-col>
+      <ion-col col-8 size-lg>  
+  
+  <!--    <p>| idCaso:{{doc.idCaso}} | idRegion: {{doc.idRegion}} | idObservador: {{doc.idObservador}}</p> -->
+  <form (ngSubmit)="register()" #registerForm="ngForm">
+      <ion-row>
+          <ion-col>
+          <ion-list inset>
+          <ion-item>
+            <ion-label stacked>Tipo</ion-label>
+            <ion-input type="text" placeholder="Tipo" name="tipo" [value]="(doc.idCaso) ? doc.tipo + ' Caso' : doc.tipo + ' Región' " readonly></ion-input>
+        </ion-item>
+          <ion-item *ngIf="doc.tipo=='Encuesta'">
+            <ion-label>Seleccione encuesta...</ion-label>
+            <ion-select [(ngModel)]="delta.idEncuesta" name="idEncuesta" >
+              <ion-select-option *ngFor="let opcion of servicioFirebase.modelo['encuestas']" [value]="opcion.id" readonly>{{opcion.encuesta}}</ion-select-option>                 
+            </ion-select>
+          </ion-item>
+          <ion-item>
+              <ion-label stacked>Accion</ion-label>
+              <ion-input type="text" placeholder="Acción" name="Accion" [(ngModel)]="doc.accion" required readonly></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label stacked>Descripción</ion-label>
+              <ion-input type="text" placeholder="Descripción" name="Descripcion" [(ngModel)]="doc.descripcion" required readonly></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label stacked>Fecha Alta</ion-label>
+              <ion-input type="date" placeholder="fecha alta" name="fhAlta" [(ngModel)]="doc.fhAlta" required readonly></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label stacked>Fecha fin plan</ion-label>
+              <ion-input type="date" placeholder="fecha fin plan" name="fhFinPlan" [(ngModel)]="doc.fhFinPlan" readonly></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label stacked>Autoridad Responsable</ion-label>
+              <ion-input type="text" placeholder="Responsable" name="Responsable" [(ngModel)]="doc.responsable"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Informe</ion-label>
+            <ion-input type="text" placeholder="Informe" name="Informe" [(ngModel)]="doc.informe"></ion-input>
+          </ion-item>
+          <ion-item>
+              <ion-label stacked>% Avance</ion-label>
+              <ion-input type="number" [min]="0.00" [max]="100.00" placeholder="% Avance" name="Avance" [(ngModel)]="doc.avance"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Fecha fin real</ion-label>
+            <ion-input type="date" placeholder="fecha fin" name="fhFin" [(ngModel)]="doc.fhFin"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label stacked>Estatus</ion-label>
+            <ion-select name="Estatus" [(ngModel)]="doc.estatus" >
+              <ion-select-option>Activo</ion-select-option>
+              <ion-select-option>Terminado</ion-select-option>
+              <ion-select-option>Cancelado</ion-select-option>
+            </ion-select>
+          </ion-item>
+      </ion-list>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col class="accion-col" *ngIf="!isUpdate">
+          <button ion-button class="submit-btn" full type="submit"  [disabled]="!registerForm.form.valid">Register</button>
+        </ion-col>
+        <ion-col class="accion-col" *ngIf="isUpdate">
+          <button ion-button class="submit-btn" full type="button"  (click)="editar()" [disabled]="!registerForm.form.valid">Guardar</button>
+        </ion-col>
+        <ion-col class="accion-col" *ngIf="isUpdate">
+          <button ion-button class="submit-btn" full type="button"  (click)="borrar()" >Borrar</button>
+        </ion-col>
+      </ion-row>
+
+    </form>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>       
+</ion-content>

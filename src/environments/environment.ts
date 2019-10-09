@@ -28,6 +28,7 @@ export const CONEXION_BD = {
 };
 */
 export const CONEXION_BD = {
+/*
   firebase: {
     apiKey: "AIzaSyDH6oYKzAK5SwMckJTPAVQF-JOuQ7vkwUQ",
     authDomain: "proionic-007.firebaseapp.com",
@@ -37,5 +38,16 @@ export const CONEXION_BD = {
     messagingSenderId: "836343510085",
     appId: "1:836343510085:web:61f97621eb7846dbe4df2c",
     measurementId: "G-231RSH26DQ"
-  }      
+  }
+*/  
+  firebase: {
+    apiKey: "AIzaSyAd1bVphgVETZZ6mYbh7RxK5yMZ1XJEU_0",
+    authDomain: "observatorio-d6ad7.firebaseapp.com",
+    databaseURL: "https://observatorio-d6ad7.firebaseio.com",
+    projectId: "observatorio-d6ad7",
+    storageBucket: "observatorio-d6ad7.appspot.com",
+    messagingSenderId: "133886977164",
+    appId: "1:133886977164:web:a949779686bf2390"
+}
+  
 };

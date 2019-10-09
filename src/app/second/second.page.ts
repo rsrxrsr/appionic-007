@@ -7,9 +7,11 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./second.page.scss'],
 })
 export class SecondPage implements OnInit {
-  price: any = '';
+  mensaje: any = '';
+  doc: any = '';
   constructor(private route: ActivatedRoute) { 
-    this.price = this.route.snapshot.params['price'];
+    this.mensaje = this.route.snapshot.params["mensaje"];
+    this.doc = JSON.parse(this.mensaje);
   }
 
   ngOnInit() {

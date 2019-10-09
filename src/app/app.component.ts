@@ -33,22 +33,26 @@ export class AppComponent {
       // FCM
       this.fcm.getToken().then(token => {
         alert('Get token:'+token);
+        this.firebase.model["token"]=token;
+        console.log("token",token);
         this.firebase.addDocument("notificaciones",{"user":"user","token":token,msg:'Get'});
       });
       this.fcm.onTokenRefresh().subscribe(token => {
         alert('Refresh:'+token);
+        this.firebase.model["control"]={"token":token};
+        console.log("token",token);
         this.firebase.addDocument("notificaciones",{"user":"user","token":token,msg:'Refresh'});
       });
       this.fcm.onNotification().subscribe(data => {
         console.log(data);
         if (data.wasTapped) {
           console.log('Received in background ',data);
-          alert('Received in background: '+data.page);
-          this.router.navigate([data.page,data.price]);
+          alert('Background: '+data.page+" | "+data.mensaje);
+          this.router.navigate([data.page,data.mensaje]);
         } else {
           console.log('Received in foreground ',data);
-          alert('Received in foreground: '+data.page+data.wasTapped);
-          this.router.navigate([data.page,data.price]);
+          alert('Foreground: '+data.page+" | "+data.mensaje);
+          this.router.navigate([data.page,data.mensaje]);
         }
       });
       this.fcm.subscribeToTopic('people');
