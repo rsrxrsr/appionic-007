@@ -8,7 +8,11 @@ const routes: Routes = [
   { path: 'second/:mensaje', loadChildren: './second/second.module#SecondPageModule' },
   { path: 'accion/:item', loadChildren: './accion/accion.module#AccionPageModule' },
   { path: 'acciones', loadChildren: './acciones/acciones.module#AccionesPageModule' },
-];
+  { path: 'casos', loadChildren: './casos/casos.module#CasosPageModule' },
+  { path: 'caso', loadChildren: './caso/caso.module#CasoPageModule' },
+  { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' }
+  ]
+;
 
 @NgModule({
   imports: [

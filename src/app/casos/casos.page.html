@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Casos</ion-title>
+    <ion-buttons slot="end">
+        <ion-button (click)="selectRow()" ion-fab mini><ion-icon name="add"></ion-icon></ion-button>
+        <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>   
+    </ion-toolbar>
+</ion-header>
+  
+  <ion-content padding class="tema-app">
+    <div *ngIf="this.firebaseService.modelo[coleccion] == 0">
+      <ion-item>No hay información</ion-item>
+    </div>
+  <ion-searchbar [(ngModel)]="searchData"   (ionInput)="setFilter(searchData,this.firebaseService.modelo[coleccion])"></ion-searchbar>
+  <div *ngIf="swFind" class="spinner-container">
+    <ion-spinner></ion-spinner>
+  </div>
+  <ion-grid>
+      <ion-row no-padding class="hdr">
+        <ion-col >
+          #
+        </ion-col>
+        <ion-col>
+          Caso 
+          <button><ion-icon slot="icon-only" name="cog" (click)="setSort('titulo')"></ion-icon></button>
+        </ion-col>
+        <ion-col >
+          Fecha
+          <button><ion-icon slot="icon-only" name="cog" (click)="setSort('dateCreation')"></ion-icon></button>
+        </ion-col>
+        <ion-col >
+          Clasificación
+          <button><ion-icon slot="icon-only" name="cog" (click)="setSort('idClassification')"></ion-icon></button>
+        </ion-col>
+        <ion-col >
+          Impacto
+        </ion-col>
+        <ion-col >
+          Riesgo
+        </ion-col>
+        <ion-col >
+          Municipio
+          <button><ion-icon slot="icon-only" name="cog" (click)="setSort('municipio')"></ion-icon></button>
+        </ion-col>
+        <ion-col col-1>
+        </ion-col> 
+      </ion-row>
+      <div *ngFor="let item of items; first as isFirst; even as isEven" (click)="selectRow($event, item)" text-wrap>
+      <ion-row no-padding [ngClass]="isFirst ? 'first' :  isEven ? 'even' : 'odd'" class="pointer">
+        <ion-col >
+          {{ item.idCase}}
+        </ion-col>
+        <ion-col >
+          {{ item.titulo}}
+        </ion-col>
+        <ion-col >
+          {{ item.dateCreation.toDate() | date:'dd-MM-yy HH:mm:ss' }}
+        </ion-col>
+        <ion-col >
+          {{ item.idClassification}}
+        </ion-col>
+        <ion-col >
+          {{ item.impacto}}
+        </ion-col>
+        <ion-col >
+          {{ item.riesgo}}
+        </ion-col>
+        <ion-col >
+          {{ item.municipio}}
+        </ion-col>
+        <ion-col col-1>
+          <ion-icon name="eye" item-start class="text-primary" title="Ver detalle"></ion-icon>
+        </ion-col> 
+    </ion-row>
+  </div>
+   </ion-grid>
+  </ion-content>
+  
