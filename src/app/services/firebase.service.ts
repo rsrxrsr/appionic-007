@@ -3,17 +3,23 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+//import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
+ 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 // ====================================================================================================================
 export class FirebaseService {
-  //-------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------
   public modelo=[];
   public model=[];
   constructor(public afs: AngularFirestore,
               public storage: AngularFireStorage,
-              public auth: AngularFireAuthModule
+              public auth: AngularFireAuthModule,
+              public geolocation: Geolocation,
+  //            public nativeGeocoder: NativeGeocoder,
+  //            public nativeGeocoderOptions:NativeGeocoderOptions
               ) {}
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -29,28 +35,27 @@ export class FirebaseService {
       );
     });
   }
-  public agregarSubDocumento(id:string, coleccion: string, doc: any){
-    let objeto = Object.assign({}, doc);  
-    delete objeto.id;  
+
+  public upsertDocument( coleccion: string, id: string, doc: any){
+    console.log("Upsert",coleccion,id,doc);
     return new Promise<any>((resolve, reject) => {
-      this.afs.collection(coleccion).doc(id).collection(coleccion).add(objeto)
+      this.afs.collection(coleccion).doc(id).set(doc)
       .then(
         res => resolve(res),
         err => reject(err)
-      );
-    });
+      )
+    })
   }
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Método genérico para editar un documento en firebase, es necesario que el objeto tenga el id inyectado o pasado como parámetro
   // params: objeto: objeto javascript, colección: nombre de la colección.
-  public editarDocumento( coleccion: string, id: string, doc: any){
+  public updateDocument( coleccion: string, id: string, doc: any){
     //if(id != null)
     //objeto.id = id;
     console.log("Update",coleccion,id,doc);
     let objeto = Object.assign({}, doc);  
     delete objeto.id;  
-  
     return new Promise<any>((resolve, reject) => {
       this.afs.collection(coleccion).doc(id).update(objeto)
       .then(
@@ -63,7 +68,7 @@ export class FirebaseService {
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Método genérico para eliminar un documento en firebase
   // params: id del documento, colección
-  public eliminarDocumento(coleccion, id){
+  public deleteDocument(coleccion, id){
     return new Promise<any>((resolve, reject) => {
       this.afs.collection(coleccion).doc(id).delete()
       .then(
@@ -73,6 +78,25 @@ export class FirebaseService {
     });
   }
   
+  public getFolio( coleccion: string) {
+    console.log("Folio",coleccion);
+    return new Promise<any>((resolve, reject) => {
+      this.docById("secuencias/"+coleccion)
+      .then(snap=>{
+        if (snap) {
+          snap.folio++;
+        } else {
+          snap={"folio":1};
+        }
+        this.upsertDocument("secuencias", coleccion, snap)
+        .then (
+          res => resolve(snap),
+          err => reject(err)
+        )  
+      })
+    })
+  }
+
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Método genérico para obtener una colección
   // params: colección: nombre de la colección
@@ -150,7 +174,9 @@ export class FirebaseService {
       this.afs.doc(doc).ref.get()
       .then(querySnapshot => {
         let snapshot = querySnapshot.data();
-        snapshot['id'] =  querySnapshot.id;
+        if (snapshot) {
+          snapshot['id'] =  querySnapshot.id;
+        }
         //console.log("docById", querySnapshot.ref.parent , "par", querySnapshot.ref.parent.parent, "path", querySnapshot.ref.path); 
         resolve(snapshot);
       })
@@ -203,40 +229,32 @@ export class FirebaseService {
     })
   }
 
-public findChild(coleccion: string, subcoleccion:string, document: string){
-  return new Promise<any>((resolve, reject) => {
-    this.afs.collection(coleccion).doc(document)
-            .collection(subcoleccion).snapshotChanges().subscribe(querySnapshot => {
-      var snapshot = [];
-      querySnapshot.forEach(function(doc) {          
-        var item=doc.payload.doc.data();
-        item['id']=doc.payload.doc.id;
-        snapshot.push(item);
-      });
-      console.log("Current SUB snapshot 0: ", snapshot[0], snapshot.length);
-      resolve(snapshot);
-    })      
-  })
-}            
-
-public watchColeccion(coleccion:string) {
-    var db = this.afs.firestore;
+  public getRegiones(coleccion) {
+    console.log('Consultar');
     return new Promise<any>((resolve, reject) => {
-      db.collection(coleccion)
-        .onSnapshot(function(querySnapshot) {
-          var snapshot = [];
-          querySnapshot.forEach(function(doc) {
-            var item=doc.data();
-            item.id=doc.id;
-            snapshot.push(item);
-          });
-          console.log("Current snapshot 0: ", snapshot[0], snapshot.length);
-          console.log("Current snapshot 1: ", snapshot[1]);
-          resolve(snapshot);
-          this.saveTextAsFile(snapshot);           
-        });
-    }); 
+    this.consultarColeccion(coleccion).then( snap1 => {
+        snap1.forEach((element1, index1) => {
+          let ref1:string = coleccion+"/"+element1.id+"/"+coleccion;
+          this.consultarColeccion(ref1).then(snap2 =>{
+            this.modelo[coleccion][index1][coleccion]=snap2;
+  //
+            snap2.forEach((element2, index2) => {
+              let ref2=ref1+"/"+element2.id+"/"+coleccion;
+              this.consultarColeccion(ref2).then(snap3 =>{
+                this.modelo[coleccion][index1][coleccion][index2][coleccion]=snap3;
+              });
+            });
+  //
+          });   
+        }
+        );
+        resolve(snap1);
+      });
+    });
+  //
   }
+
+// File Upload
 
   public uploadDocumento(coleccion: string, objeto: any){
     delete objeto.id;
@@ -249,7 +267,6 @@ public watchColeccion(coleccion:string) {
     });
   }
 
-// File Upload
 public fileUpload(data:any) {
   console.log("Subiendo", data, "fin");
   let coleccion='casos/evidencias/'+data.name;
@@ -331,4 +348,64 @@ public imageUpload(data:any) {
     console.log("Logout User");
   }
 
+// Geolocation
+
+getLocation() {
+  return new Promise<any>((resolve, reject) => {
+  const options : any = {
+     enableHighAccuracy : false,
+     timeout : 3000,
+     maximumAge : 0
+  }
+  this.geolocation.getCurrentPosition(options).then((resp) => {       
+    console.log('Coords',  resp.coords);
+    this.modelo["coords"] = resp.coords;
+    this.modelo["latitude"]  = resp.coords.latitude;
+    this.modelo["longitude"] = resp.coords.longitude;
+    //this.getGeoencoder(resp.coords.latitude, resp.coords.longitude);
+    resolve(resp.coords);
+  }).catch((error) => {
+    console.log('Error getting location', error);
+  });
+/*
+  let watch = this.geolocation.watchPosition();
+  watch.subscribe((resp) => {
+    console.log('Watch Coords',  resp.coords);
+    this.modelo["coords"] = resp.coords;
+    this.modelo["latitud"]  = resp.coords.latitude;
+    this.modelo["longitud"] = resp.coords.longitude;
+  });
+*/
+})}
+
+//geocoder method to fetch address from coordinates passed as arguments
+/*
+getGeoencoder(latitude,longitude){
+  let geoencoderOptions: NativeGeocoderOptions = {
+    useLocale: true,
+    maxResults: 5
+  };
+  this.nativeGeocoder.reverseGeocode(latitude, longitude, geoencoderOptions)
+  .then((result: NativeGeocoderResult[] ) => {
+    this.modelo["address"] = this.generateAddress(result[0]);
+  })
+  .catch((error: any) => {
+    alert('Error getting location'+ JSON.stringify(error));
+  });
+}
+//Return Comma saperated address
+generateAddress(addressObj){
+  let obj = [];
+  let address = "";
+  for (let key in addressObj) {
+    obj.push(addressObj[key]);
+  }
+  obj.reverse();
+  for (let val in obj) {
+    if(obj[val].length)
+    address += obj[val]+', ';
+  }
+return address.slice(0, -2);
+}
+*/
 } // End Service

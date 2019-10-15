@@ -14,14 +14,14 @@ export class AccionPage implements OnInit {
   coleccion="acciones";
   isUpdate=false; 
   createSuccess = false;
-  doc = {id:"",tipo:""};
+  doc = {id:"",tipo:"",idCaso:"",accion:"",descripcion:"",fhAlta:"",fhFinPlan:"",responsable:"",informe:"",avance:"",fhFin:"",estatus:""};
   delta:any; 
 
   constructor(
 
     private alertController:AlertController,
     private activatedRoute :ActivatedRoute, 
-    private firebaseService:FirebaseService
+    public firebaseService:FirebaseService,
   ) {
   }
 
@@ -31,9 +31,19 @@ export class AccionPage implements OnInit {
     this.firebaseService.consultarColeccion("encuestas");
   }
 
-  public register() {
-    this.firebaseService.editarDocumento (this.coleccion, this.doc.id, this.doc );
+  public registrar() {
+    this.firebaseService.updateDocument(this.coleccion, this.doc.id, this.doc );
     this.presentAlert("Documento actualizado");          
+  }
+
+  public actualizar() {
+    this.firebaseService.updateDocument(this.coleccion, this.doc.id, this.doc );
+    this.presentAlert("Caso actualizado"); 
+  }
+
+  public borrar() {
+    this.firebaseService.deleteDocument(this.coleccion, this.doc.id );  
+    this.presentAlert("Caso borrado"); 
   }
 
   async presentAlert(message) {

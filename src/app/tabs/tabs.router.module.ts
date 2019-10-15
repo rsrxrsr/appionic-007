@@ -7,14 +7,36 @@ const routes: Routes = [
     path: 'tabs',
     component: TabsPage,
     children: [
-      {path: 'tab1',loadChildren: () =>import('../caso/caso.module').then(m => m.CasoPageModule)},
-      {path: '',loadChildren: () =>import('../home/home.module').then(m => m.HomePageModule)},
-      {path: '',redirectTo: '/tabs/tab1',pathMatch: 'full'}
+      {
+        path: 'tab1',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../caso/caso.module').then(m => m.CasoPageModule)
+          }
+        ]
+      },
+      {
+        path: 'tab2',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../home/home.module').then(m => m.HomePageModule)
+          }
+        ]
+      },
+      {
+        path: '',
+        redirectTo: '/tabs/tab1',
+        pathMatch: 'full'
+      }
     ]
   },
   {
     path: '',
-    redirectTo: '/tabs/tab1',
+    redirectTo: '/tabs/tabs/tab1',
     pathMatch: 'full'
   }
 ];

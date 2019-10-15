@@ -12,12 +12,13 @@ export class CasosPage implements OnInit {
 
   public coleccion="caso";
   public items=[];
+  public searchData;
   public swFind=false;
   public toggle=[];
 
   constructor(
     private router:Router,
-    private firebaseService: FirebaseService
+    public firebaseService: FirebaseService
   ) { }
 
   ngOnInit() {
@@ -27,8 +28,8 @@ export class CasosPage implements OnInit {
   }
 
   public selectRow(event, item ){
-    console.log("Item",item);
-    item=JSON.stringify(item);
+    this.firebaseService.model["rowCaso"]=item;
+    console.log("Item",this.firebaseService.model["rowCaso"]);    
     this.router.navigate(["/tabs"]);
   }
 

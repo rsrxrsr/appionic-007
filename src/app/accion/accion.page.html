@@ -17,7 +17,7 @@
       <ion-col col-8 size-lg>  
   
   <!--    <p>| idCaso:{{doc.idCaso}} | idRegion: {{doc.idRegion}} | idObservador: {{doc.idObservador}}</p> -->
-  <form (ngSubmit)="register()" #registerForm="ngForm">
+  <form (ngSubmit)="registrar()" #registerForm="ngForm">
       <ion-row>
           <ion-col>
           <ion-list inset>
@@ -28,7 +28,7 @@
           <ion-item *ngIf="doc.tipo=='Encuesta'">
             <ion-label>Seleccione encuesta...</ion-label>
             <ion-select [(ngModel)]="delta.idEncuesta" name="idEncuesta" >
-              <ion-select-option *ngFor="let opcion of servicioFirebase.modelo['encuestas']" [value]="opcion.id" readonly>{{opcion.encuesta}}</ion-select-option>                 
+              <ion-select-option *ngFor="let opcion of firebaseService.modelo['encuestas']" [value]="opcion.id" readonly>{{opcion.encuesta}}</ion-select-option>                 
             </ion-select>
           </ion-item>
           <ion-item>
@@ -77,10 +77,10 @@
 
       <ion-row>
         <ion-col class="accion-col" *ngIf="!isUpdate">
-          <button ion-button class="submit-btn" full type="submit"  [disabled]="!registerForm.form.valid">Register</button>
+          <button ion-button class="submit-btn" full type="submit"  [disabled]="!registerForm.form.valid">Registrar</button>
         </ion-col>
         <ion-col class="accion-col" *ngIf="isUpdate">
-          <button ion-button class="submit-btn" full type="button"  (click)="editar()" [disabled]="!registerForm.form.valid">Guardar</button>
+          <button ion-button class="submit-btn" full type="button"  (click)="actualizar()" [disabled]="!registerForm.form.valid">Actualizar</button>
         </ion-col>
         <ion-col class="accion-col" *ngIf="isUpdate">
           <button ion-button class="submit-btn" full type="button"  (click)="borrar()" >Borrar</button>

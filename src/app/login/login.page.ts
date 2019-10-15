@@ -18,7 +18,6 @@ export class LoginPage implements OnInit {
 
   constructor(
     private router: Router,
-    private navController:NavController,
     private alertController:AlertController,
     private firebaseService:FirebaseService) { }
 
@@ -28,17 +27,15 @@ export class LoginPage implements OnInit {
   }
   
   public login() {
-    //this.navCtrl.push(TabsPage);  //remove for prod
-    //this.firebaseService.loginUser(this.usuario.correo,this.usuario.pass);
     var usuarios:any =[];
     this.firebaseService.findColeccion("usuarios",'correo','==',this.usuario.correo).then(
       snap =>{usuarios = snap;
         console.info('FrmUsuarios',usuarios[0], this.usuario);        
         if (usuarios.length==1 && this.usuario.pass === usuarios[0].pass && usuarios[0].estatus=="Activo") {
-          //this.showPopup("Success", "Account created.");
           this.usuario=usuarios[0];
           this.usuario["token"]=this.firebaseService.model["token"] ? this.firebaseService.model["token"] : "token";
-          this.firebaseService.editarDocumento("usuarios",this.usuario.id, this.usuario)
+          this.firebaseService["usuario"]=this.usuario;
+          this.firebaseService.updateDocument("usuarios",this.usuario.id, this.usuario);
           this.router.navigate(['/home']);
         } else {
           this.presentAlert("The password confirmation does not match.");
@@ -56,4 +53,5 @@ export class LoginPage implements OnInit {
     });
     await alert.present();
   }
+
 }

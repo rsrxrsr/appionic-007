@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-title>Casos</ion-title>
     <ion-buttons slot="end">
-        <ion-button (click)="selectRow()" ion-fab mini><ion-icon name="add"></ion-icon></ion-button>
+        <ion-button (click)="selectRow(null, null)" ion-fab mini><ion-icon name="add"></ion-icon></ion-button>
         <ion-menu-button autoHide="false"></ion-menu-button>
     </ion-buttons>   
     </ion-toolbar>
@@ -12,7 +12,7 @@
     <div *ngIf="this.firebaseService.modelo[coleccion] == 0">
       <ion-item>No hay información</ion-item>
     </div>
-  <ion-searchbar [(ngModel)]="searchData"   (ionInput)="setFilter(searchData,this.firebaseService.modelo[coleccion])"></ion-searchbar>
+  <ion-searchbar [(ngModel)]="searchData"   (ionInput)="setFilter(searchData,firebaseService.modelo[coleccion])"></ion-searchbar>
   <div *ngIf="swFind" class="spinner-container">
     <ion-spinner></ion-spinner>
   </div>
@@ -55,7 +55,7 @@
           {{ item.titulo}}
         </ion-col>
         <ion-col >
-          {{ item.dateCreation.toDate() | date:'dd-MM-yy HH:mm:ss' }}
+          {{ item.dateCreation }}
         </ion-col>
         <ion-col >
           {{ item.idClassification}}

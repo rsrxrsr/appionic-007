@@ -13,6 +13,8 @@ import { FirebaseService } from './services/firebase.service';
 //import { Firebase } from '@ionic-native/firebase/ngx';
 
 import { FCM } from '@ionic-native/fcm/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -32,12 +34,14 @@ import { AppRoutingModule } from './app-routing.module';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthModule
-],
+  ],
   providers: [
     StatusBar,
     SplashScreen,
     FCM,
     FirebaseService,
+    Geolocation,
+    NativeGeocoder,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

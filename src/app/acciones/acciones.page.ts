@@ -12,7 +12,7 @@ export class AccionesPage implements OnInit {
 
   constructor(
     private router: Router,
-    private firebaseService:FirebaseService
+    public firebaseService:FirebaseService
   ) {
   }
 

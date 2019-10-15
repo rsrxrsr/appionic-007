@@ -45,13 +45,15 @@ export class AppComponent {
       });
       this.fcm.onNotification().subscribe(data => {
         console.log(data);
+        let doc:any;
+        doc = JSON.parse(data.mensaje);
         if (data.wasTapped) {
           console.log('Received in background ',data);
-          alert('Background: '+data.page+" | "+data.mensaje);
+          alert('Background msg: '+doc.accion);
           this.router.navigate([data.page,data.mensaje]);
         } else {
           console.log('Received in foreground ',data);
-          alert('Foreground: '+data.page+" | "+data.mensaje);
+          alert('Foreground msg: '+doc.accion);
           this.router.navigate([data.page,data.mensaje]);
         }
       });
