@@ -294,12 +294,13 @@ public fileUpload(data:any) {
   })
 }       
   
-public imageUpload(data:any) {
+public imageUpload(filename:string, data:any, ext:string) {
   console.log("Subiendo", data, "fin");
   //var imagen = 'data:image/jpeg;base64,' + data;
-  const file = this.storage.ref('casos/evidencias/file.jpg');
+  const file = this.storage.ref('casos/evidencias/'+filename+ext);
+  const contentType=(ext==".jpg") ? 'image/jpeg' : 'video/mp4'; 
   file
-  .putString(data, 'base64', {contentType: 'image/jpeg'})
+  .putString(data, 'base64', {'contentType': contentType})
   .then(snapshot => {
       console.log("success",snapshot);
       file.getDownloadURL().subscribe(downloadUrl=>{
@@ -315,6 +316,7 @@ public imageUpload(data:any) {
       }) 
     }, err => {
       console.log("err",err);
+      alert(err);
     })
   } 
 

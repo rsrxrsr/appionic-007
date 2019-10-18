@@ -15,6 +15,9 @@ import { FirebaseService } from './services/firebase.service';
 import { FCM } from '@ionic-native/fcm/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+import { MediaCapture } from '@ionic-native/media-capture/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -42,6 +45,9 @@ import { AppRoutingModule } from './app-routing.module';
     FirebaseService,
     Geolocation,
     NativeGeocoder,
+    Camera,
+    MediaCapture,
+    File,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

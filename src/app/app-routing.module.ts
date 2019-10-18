@@ -10,7 +10,8 @@ const routes: Routes = [
   { path: 'acciones', loadChildren: './acciones/acciones.module#AccionesPageModule' },
   { path: 'casos', loadChildren: './casos/casos.module#CasosPageModule' },
   { path: 'caso', loadChildren: './caso/caso.module#CasoPageModule' },
-  { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' }
+  { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' },
+  { path: 'camara', loadChildren: './camara/camara.module#CamaraPageModule' }
   ]
 ;
 

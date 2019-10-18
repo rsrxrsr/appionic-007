@@ -14,6 +14,11 @@ const routes: Routes = [
             path: '',
             loadChildren: () =>
               import('../caso/caso.module').then(m => m.CasoPageModule)
+          },
+          {
+            path: 'camara',
+            loadChildren: () =>
+              import('../camara/camara.module').then(m => m.CamaraPageModule)
           }
         ]
       },

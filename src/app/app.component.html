@@ -1,5 +1,5 @@
 <ion-app>
-  <ion-split-pane>
+  <!--<ion-split-pane>-->
   <ion-menu contentId="content1" side="end">
     <ion-header>
       <ion-toolbar>
@@ -10,12 +10,12 @@
       <ion-list>
         <ion-item><a routerLink="/casos">Casos</a></ion-item>
         <ion-item><a routerLink="/acciones">Acciones</a></ion-item>
+        <ion-item><a routerLink="/camara">Camara</a></ion-item>
         <ion-item>Menu Item</ion-item>
-        <ion-item>Menu Item</ion-item>
-        <ion-item>Menu Item</ion-item>
+        <ion-item><button ion-button menuClose>Close Menu</button></ion-item>
       </ion-list>
     </ion-content>
   </ion-menu>
   <ion-router-outlet id="content1" main></ion-router-outlet>
-  </ion-split-pane>
+  <!--</ion-split-pane>-->
 </ion-app>

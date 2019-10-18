@@ -113,4 +113,8 @@ export class CasoPage implements OnInit {
       });
     });
   }
+
+  camara() {
+    this.router.navigate(["tabs/tabs/tab1/camara"]);
+  }
 }

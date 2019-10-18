@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>        
+    <ion-title>camara</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-button (click)="tomarFoto()">Tomar foto</ion-button>
+  <ion-button (click)="tomarVideo()">Tomar Video</ion-button>
+  <img src="{{foto}}" *ngIf="foto" />
+  <p>{{safeUrl}}</p>
+  <video #myvideo controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer">
+    <source [src]="safeUrl" type="video/mp4" />
+   </video>
+ 
+</ion-content>
