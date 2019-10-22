@@ -12,9 +12,55 @@
   <ion-button (click)="tomarFoto()">Tomar foto</ion-button>
   <ion-button (click)="tomarVideo()">Tomar Video</ion-button>
   <img src="{{foto}}" *ngIf="foto" />
-  <p>{{safeUrl}}</p>
-  <video #myvideo controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer">
-    <source [src]="safeUrl" type="video/mp4" />
-   </video>
+
+  <p>urlVideo</p>
+  <video controls="controls" autoplay preload="metadata" webkit-playsinline="webkit-playsinline" class="videoPlayer">
+    <source id="idVideo" #myvideo [src]="urlVideo" type="video/mp4" *ngIf="urlVideo"/>
+  </video>
+
+    <!-- -->
+    <div *ngIf="evidencias.length == 0">
+        <ion-item>No hay evidencias.</ion-item>
+      </div>
+      <!-- --> 
+      <ion-grid>
+        <ion-row no-padding class="hdr">
+          <ion-col class="ion-text-center">
+            <h6 style="text-align:center;">Evidencias</h6>
+          </ion-col>
+        </ion-row>
+        <div *ngFor="let item of evidencias;even as isEven"  text-wrap>
+          <ion-row no-padding [ngClass]="isEven? 'even' : 'odd'">
+            <ion-col col-2></ion-col>            
+            <ion-col col-8>              
+              <ion-card *ngIf="item.tipo=='imagen'">
+                <ion-card-header>
+                  Fotografia
+                </ion-card-header>
+                <ion-card-content>
+                  <div style="height:80%;width:80%" class="ion-text-center">
+                    <img [src]="item.urlPhoto"  style="height:80%;width:80%" />
+                  </div>
+                </ion-card-content>
+              </ion-card>
+              <ion-card *ngIf="item.tipo=='video'"> 
+                <ion-card-header>
+                  Video
+                </ion-card-header>
+                <ion-card-content>
+                  <video controls="controls"  style="height:80%;width:80%" preload="metadata" webkit-playsinline="webkit-playsinline" class="videoPlayer">
+                    <source [src]="item.urlPhoto" type="video/mp4" />
+                  </video>
+                </ion-card-content>
+              </ion-card>    
+              
+            </ion-col>       
+            <ion-col col-1>
+              {{item.tipo}}
+            </ion-col>
+            <ion-col col-1></ion-col>            
+          </ion-row>
+        </div>
+      </ion-grid>
  
 </ion-content>

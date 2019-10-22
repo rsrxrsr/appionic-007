@@ -13,7 +13,6 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 export class FirebaseService {
 //-------------------------------------------------------------------------------------------------------------------
   public modelo=[];
-  public model=[];
   constructor(public afs: AngularFirestore,
               public storage: AngularFireStorage,
               public auth: AngularFireAuthModule,
@@ -31,6 +30,18 @@ export class FirebaseService {
       this.afs.collection(coleccion).add(objeto)
       .then(
         res => resolve(res),
+        err => reject(err)
+      );
+    });
+  }
+
+  public addDocumentGetId(coleccion: string, objeto: any){
+    delete objeto.id;
+    return new Promise<any>((resolve, reject) => {
+      let id = this.afs.createId();
+      this.afs.collection(coleccion).doc(id).set(objeto)
+      .then(
+        res => resolve(id),
         err => reject(err)
       );
     });
@@ -77,7 +88,11 @@ export class FirebaseService {
       );
     });
   }
-  
+
+  public getId(){  
+    return this.afs.createId();
+  }
+
   public getFolio( coleccion: string) {
     console.log("Folio",coleccion);
     return new Promise<any>((resolve, reject) => {
@@ -126,7 +141,7 @@ export class FirebaseService {
           snapshot[doc.payload.doc.id]=doc.payload.doc.data();
         });
         console.log("Consulta: ", coleccion, snapshot );
-        this.model[coleccion]=snapshot;
+        this.modelo[coleccion]=snapshot;
         resolve(snapshot);
       })      
     })
@@ -285,7 +300,7 @@ public fileUpload(data:any) {
           contentType: snapshot.metadata.contentType,
           size: snapshot.metadata.size }
         resolve(fileInfo);  
-        //this.agregarDocumento('files',fileInfo);
+        this.addDocument('files',fileInfo);
       }) 
     }, err => {
       console.log("err",err);
@@ -298,26 +313,37 @@ public imageUpload(filename:string, data:any, ext:string) {
   console.log("Subiendo", data, "fin");
   //var imagen = 'data:image/jpeg;base64,' + data;
   const file = this.storage.ref('casos/evidencias/'+filename+ext);
-  const contentType=(ext==".jpg") ? 'image/jpeg' : 'video/mp4'; 
-  file
-  .putString(data, 'base64', {'contentType': contentType})
-  .then(snapshot => {
-      console.log("success",snapshot);
-      file.getDownloadURL().subscribe(downloadUrl=>{
-        console.log(downloadUrl);
-        let fileInfo = {
-          name: snapshot.metadata.name,
-          created: snapshot.metadata.timeCreated,
-          url: downloadUrl,
-          fullPath: snapshot.metadata.fullPath,
-          contentType: snapshot.metadata.contentType,
-          size: snapshot.metadata.size }
-        this.addDocument('files',fileInfo);
-      }) 
-    }, err => {
-      console.log("err",err);
-      alert(err);
-    })
+  let type:string;
+  let base:string;
+  if (ext===".jpg") {
+    type='image/jpeg';
+    base='base64';
+  } else {
+    type='video/mp4';
+    base='data_url';
+  }
+  return new Promise<any>((resolve, reject) => {
+    file
+    .putString(data, base, {contentType: type})
+    .then(snapshot => {
+        console.log("success",snapshot);
+        file.getDownloadURL().subscribe(downloadUrl=>{
+          console.log(downloadUrl);
+          let fileInfo = {
+            name: snapshot.metadata.name,
+            created: snapshot.metadata.timeCreated,
+            url: downloadUrl,
+            fullPath: snapshot.metadata.fullPath,
+            contentType: snapshot.metadata.contentType,
+            size: snapshot.metadata.size }
+          resolve(fileInfo);  
+          this.addDocument('files',fileInfo);
+        }) 
+      }, err => {
+        console.log("err",err);
+        alert(err);
+      })
+    });  
   } 
 
   // Authentication

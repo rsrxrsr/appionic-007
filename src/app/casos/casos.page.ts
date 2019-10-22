@@ -28,8 +28,8 @@ export class CasosPage implements OnInit {
   }
 
   public selectRow(event, item ){
-    this.firebaseService.model["rowCaso"]=item;
-    console.log("Item",this.firebaseService.model["rowCaso"]);    
+    this.firebaseService.modelo["casoEntity"]=item;
+    console.log("Item",this.firebaseService.modelo["casoEntity"]);    
     this.router.navigate(["/tabs"]);
   }
 

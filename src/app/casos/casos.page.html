@@ -23,15 +23,15 @@
         </ion-col>
         <ion-col>
           Caso 
-          <button><ion-icon slot="icon-only" name="cog" (click)="setSort('titulo')"></ion-icon></button>
+          <button><ion-icon slot="icon-only" name="arrow-dropup" (click)="setSort('titulo')"></ion-icon></button>
         </ion-col>
         <ion-col >
           Fecha
-          <button><ion-icon slot="icon-only" name="cog" (click)="setSort('dateCreation')"></ion-icon></button>
+          <button><ion-icon slot="icon-only" name="arrow-dropup" (click)="setSort('dateCreation')"></ion-icon></button>
         </ion-col>
         <ion-col >
           Clasificación
-          <button><ion-icon slot="icon-only" name="cog" (click)="setSort('idClassification')"></ion-icon></button>
+          <button><ion-icon slot="icon-only" name="arrow-dropup" (click)="setSort('idClassification')"></ion-icon></button>
         </ion-col>
         <ion-col >
           Impacto
@@ -41,7 +41,7 @@
         </ion-col>
         <ion-col >
           Municipio
-          <button><ion-icon slot="icon-only" name="cog" (click)="setSort('municipio')"></ion-icon></button>
+          <button><ion-icon slot="icon-only" name="arrow-dropup" (click)="setSort('municipio')"></ion-icon></button>
         </ion-col>
         <ion-col col-1>
         </ion-col> 
@@ -55,7 +55,7 @@
           {{ item.titulo}}
         </ion-col>
         <ion-col >
-          {{ item.dateCreation }}
+          {{ item.dateCreation  | date:'dd-MM-yy HH:mm:ss'}}
         </ion-col>
         <ion-col >
           {{ item.idClassification}}

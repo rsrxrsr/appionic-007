@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>usuario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-row>
+    <ion-col col-8>
+      <div class="preview-img"><br/><br/> <img id="idImg" [src]="doc.foto" style="left:10%;width:80%;height:80%" /> <br/><br/></div>
+    </ion-col>
+    <ion-col col-8>
+      <div id="mapauser" style="left:10%;width:80%;height:80%"></div>
+    </ion-col>
+  </ion-row>
+
+    <form (ngSubmit)="register()" #registerForm="ngForm">
+      <ion-row>
+        <ion-col col-8>
+          <ion-list inset>
+            <ion-item>
+              <ion-label stacked>Usuario</ion-label>
+              <ion-input type="text" placeholder="Name" name="name" [(ngModel)]="doc.usuario" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label stacked>Correo</ion-label>
+              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="doc.correo" required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>Roles</ion-label>
+              <ion-select name="roles" [(ngModel)]="doc.roles" multiple="true">
+                <ion-select-option>Ejecutivo</ion-select-option>
+                <ion-select-option>Administrador</ion-select-option>
+                <ion-select-option>Supervisor</ion-select-option>
+                <ion-select-option>Observador</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <ion-item>
+              <ion-label>Estado</ion-label>
+              <ion-select [(ngModel)]="delta.estado" name="idEdo">
+                <ion-select-option *ngFor="let opcion of firebaseService.modelo[regiones]" [value]="opcion" >{{opcion.nombre}}</ion-select-option>                 
+              </ion-select>
+            </ion-item>                  
+            <ion-item>
+              <ion-label>Municipio</ion-label>
+              <ion-select [(ngModel)]="delta.municipio" name="idMun" >
+                <ion-select-option *ngFor="let opcion of delta.estado[regiones]" [value]="opcion" >{{opcion.nombre}}</ion-select-option>                 
+              </ion-select>
+            </ion-item>   
+            <ion-item>
+              <ion-label>Colonia</ion-label>
+              <ion-select [(ngModel)]="delta.colonia" name="idCol" (ionChange)="setIdRegion(regiones)">
+                <ion-select-option *ngFor="let opcion of delta.municipio[regiones]" [value]="opcion" >{{opcion.nombre}}</ion-select-option>                 
+              </ion-select>
+            </ion-item> 
+            <ion-item>
+              <ion-label>Estatus</ion-label>
+              <ion-select name="estatus" [(ngModel)]="doc.estatus">
+                <ion-select-option>Activo</ion-select-option>
+                <ion-select-option>Inactivo</ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+<!--
+      <ion-item>
+        <label color="primary" class="item item-input"></label>
+        <input type="file" class="custom-file-input" id="idfile" name="uploadfile" ng-model="form.uploadfile" (change)="setFile($event)"  style="color: transparent">
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Contraseña</ion-label>
+        <ion-input type="password" placeholder="Contraseña" name="pass" [(ngModel)]="doc.pass" required></ion-input>
+      </ion-item>
+      <ion-item>
+          <ion-label stacked>Confirme contraseña</ion-label>
+          <ion-input type="password" placeholder="Confirm Password" name="confirmation_password" [(ngModel)]="forma.confirmation_password" required></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label stacked>Region</ion-label>
+        <ion-input type="region" placeholder="Región" name="region" value="{{doc.idRegion}}" required></ion-input>
+      </ion-item>
+  -->  
+        <ion-row>
+          <ion-col class="usuario-col" *ngIf="!isUpdate">
+            <button ion-button class="submit-btn" full type="submit"  [disabled]="!registerForm.form.valid">Register</button>
+          </ion-col>
+          <ion-col class="usuario-col" *ngIf="isUpdate">
+            <button ion-button class="submit-btn" full type="button"  (click)="editar()" [disabled]="!registerForm.form.valid">Guardar</button>
+          </ion-col>
+          <ion-col class="usuario-col" *ngIf="isUpdate">
+            <button ion-button class="submit-btn" full type="button"  (click)="borrar()" [disabled]="!registerForm.form.valid">Borrar</button>
+          </ion-col>
+        </ion-row>
+  
+      </form>
+    
+</ion-content>

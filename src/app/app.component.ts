@@ -32,14 +32,14 @@ export class AppComponent {
       this.splashScreen.hide();
       // FCM
       this.fcm.getToken().then(token => {
-        alert('Get token:'+token);
-        this.firebase.model["token"]=token;
+        //alert('Get token:'+token);
+        this.firebase.modelo["token"]=token;
         console.log("token",token);
         this.firebase.addDocument("notificaciones",{"user":"user","token":token,msg:'Get'});
       });
       this.fcm.onTokenRefresh().subscribe(token => {
-        alert('Refresh:'+token);
-        this.firebase.model["control"]={"token":token};
+        //alert('Refresh:'+token);
+        this.firebase.modelo["control"]={"token":token};
         console.log("token",token);
         this.firebase.addDocument("notificaciones",{"user":"user","token":token,msg:'Refresh'});
       });

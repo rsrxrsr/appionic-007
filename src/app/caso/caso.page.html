@@ -2,8 +2,9 @@
   <ion-toolbar>
     <ion-button slot="start" (click)="salir()"><ion-icon name="arrow-round-up"></ion-icon></ion-button>    
     <ion-title>caso</ion-title>
-    <a routerLink="camara" slot="end" class="button"><ion-icon name="camera"></ion-icon></a>
-    <ion-button slot="end" (click)="camara()"><ion-icon name="camera"></ion-icon></ion-button>    
+    <!--<a routerLink="camara" slot="end" class="button"><ion-icon name="camera"></ion-icon></a>-->
+    <ion-button slot="end" routerLink="/tabs/tabs/tab2/camara/camara"><ion-icon name="camera"></ion-icon></ion-button>    
+    <ion-button slot="end" (click)="goCamara()"><ion-icon name="videocam"></ion-icon></ion-button>    
   </ion-toolbar>
 </ion-header>
 
@@ -16,7 +17,7 @@
       <ion-col col-2></ion-col>
       <ion-col col-8>  
   
-      <form (ngSubmit)="registrar()" #registerForm="ngForm" >
+      <form (ngSubmit)="actualizar()" #registerForm="ngForm" >
         <ion-row>
           <ion-col>
             <ion-list inset>

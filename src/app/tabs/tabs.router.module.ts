@@ -25,10 +25,21 @@ const routes: Routes = [
       {
         path: 'tab2',
         children: [
+          { path: '', redirectTo: 'camara/medio', pathMatch: 'full' },
+          {
+            path: 'camara/:medio',
+            loadChildren: () =>
+              import('../camara/camara.module').then(m => m.CamaraPageModule)
+          }
+        ]
+      },
+      {
+        path: 'tab3',
+        children: [
           {
             path: '',
             loadChildren: () =>
-              import('../home/home.module').then(m => m.HomePageModule)
+              import('../mapa/mapa.module').then(m => m.MapaPageModule)
           }
         ]
       },

@@ -11,7 +11,9 @@ const routes: Routes = [
   { path: 'casos', loadChildren: './casos/casos.module#CasosPageModule' },
   { path: 'caso', loadChildren: './caso/caso.module#CasoPageModule' },
   { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' },
-  { path: 'camara', loadChildren: './camara/camara.module#CamaraPageModule' }
+  { path: 'camara', loadChildren: './camara/camara.module#CamaraPageModule' },
+  { path: 'mapa', loadChildren: './mapa/mapa.module#MapaPageModule' },
+  { path: 'usuario', loadChildren: './usuario/usuario.module#UsuarioPageModule' }
   ]
 ;
 

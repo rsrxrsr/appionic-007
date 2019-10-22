@@ -33,10 +33,10 @@ export class LoginPage implements OnInit {
         console.info('FrmUsuarios',usuarios[0], this.usuario);        
         if (usuarios.length==1 && this.usuario.pass === usuarios[0].pass && usuarios[0].estatus=="Activo") {
           this.usuario=usuarios[0];
-          this.usuario["token"]=this.firebaseService.model["token"] ? this.firebaseService.model["token"] : "token";
+          this.usuario["token"]=this.firebaseService.modelo["token"] ? this.firebaseService.modelo["token"] : "token";
           this.firebaseService["usuario"]=this.usuario;
           this.firebaseService.updateDocument("usuarios",this.usuario.id, this.usuario);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/casos']);
         } else {
           this.presentAlert("The password confirmation does not match.");
         }
@@ -47,7 +47,7 @@ export class LoginPage implements OnInit {
   async presentAlert(message) {
     const alert = await this.alertController.create({
       header: 'Alert',
-      subHeader: 'Subtitle',
+      subHeader: 'Secure',
       "message": message,
       buttons: ['OK']
     });

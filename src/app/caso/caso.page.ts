@@ -26,9 +26,12 @@ export class CasoPage implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit",this.doc,this.firebaseService["usuario"]);      
-    if (this.firebaseService.model["rowCaso"]) {
+    if (this.firebaseService.modelo["casoEntity"]) {
       this.isUpdate=true;
-      this.doc=this.firebaseService.model["rowCaso"];
+      this.doc=this.firebaseService.modelo["casoEntity"];
+      let evidencias="caso/"+this.doc.id+"/evidencias";
+      this.firebaseService.consultarColeccion(evidencias)
+        .then(snap=>this.firebaseService.modelo["evidencias"]=snap)
     } else {
       this.firebaseService.getLocation().then(coords=>{
         this.doc["latitude"]=coords.latitude;
@@ -36,6 +39,7 @@ export class CasoPage implements OnInit {
         this.getGeoencoder(coords.latitude,coords.longitude)
           .then(address=>this.doc["address"]=address)
       })
+      this.doc.id=this.firebaseService.getId();
       this.firebaseService.getFolio("caso").then(snap=>{
         this.doc["idCase"]=snap.folio});
     }
@@ -46,15 +50,32 @@ export class CasoPage implements OnInit {
     });
     console.log("init doc", this.doc);
   }
-
+/*
   public registrar() {
-    this.firebaseService.addDocument(this.coleccion, this.doc );
+    this.firebaseService.addDocumentGetId(this.coleccion, this.doc)
+      .then(snap=>{
+        let ref=this.coleccion+"/"+snap+"/evidencias";
+        alert(ref);
+        let long=this.firebaseService.modelo["evidencias"].length;
+        alert(long);
+        this.firebaseService.modelo["evidencias"].forEach((element, index) => {
+          alert(index);
+          this.firebaseService.upsertDocument(ref, index, element);
+        });
+    });
     this.presentAlert("Caso registrado"); 
   }
-
+*/
   public actualizar() {
-    this.firebaseService.updateDocument(this.coleccion, this.doc.id, this.doc );
-    this.presentAlert("Caso actualizado"); 
+    this.firebaseService.upsertDocument(this.coleccion, this.doc.id, this.doc )
+      .then(snap=>{
+        let ref=this.coleccion+"/"+this.doc.id+"/evidencias";
+        this.firebaseService.modelo["evidencias"].forEach((element, index) => {
+          this.firebaseService.upsertDocument(ref, "sq-"+index, element);
+            //.then(success=>alert("success"),err=>alert(err));
+          });
+    });
+    this.presentAlert("Caso actualizado"); alert
   }
 
   public borrar() {
@@ -114,7 +135,8 @@ export class CasoPage implements OnInit {
     });
   }
 
-  camara() {
-    this.router.navigate(["tabs/tabs/tab1/camara"]);
+  goCamara() {
+    //this.router.navigate(["tabs/tabs/tab1/camara"]);
+    this.router.navigate(["tabs/tabs/tab2/camara/video"]);
   }
 }
