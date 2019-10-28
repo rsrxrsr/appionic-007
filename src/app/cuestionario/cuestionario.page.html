@@ -1,0 +1,105 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>cuestionario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding class="tema-app">
+  <div padding-horizontal text-center >
+    <img src="../../assets/imgs/text.png" alt="Observador ciudadano">
+  </div>
+  <ion-grid>  
+    <ion-row size-lg>
+      <ion-col col-2 size-lg></ion-col>
+      <ion-col col-8 size-lg>  
+    
+        <form (ngSubmit)="setRespuestas()" #registerForm="ngForm" >
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-label>Encuesta</ion-label>
+                <ion-select [(ngModel)]="delta.encuesta" name="encuesta"  (ionChange)="setIdRegion()">
+                  <ion-select-option *ngFor="let opcion of firebaseService.modelo['encuestas']" [value]="opcion" >{{opcion.encuesta}}</ion-select-option>                 
+                </ion-select>
+                </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-list inset >
+                <ion-item>
+                    <ion-label stacked>Encuesta</ion-label>
+                    <ion-input type="text" placeholder="Encuesta" name="encuesta" [ngModel]="doc.encuesta" readonly></ion-input>
+                    <ion-input type="text" placeholder="idEncuesta" name="idEncuesta" [ngModel]="doc.id" readonly></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label stacked>Descripción</ion-label>
+                    <ion-input type="text" placeholder="cuestionario" name="cuestionario" [ngModel]="doc.descripcion" readonly></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label stacked>Inicio encuesta</ion-label>
+                  <ion-input type="text" placeholder="fhInicio" name="fhInicio" [ngModel]="doc.instancias.fhInicio" readonly></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label stacked>Cierre encuesta</ion-label>
+                  <ion-input type="text" placeholder="fhFin" name="fhFin" [ngModel]="doc.instancias.fhFin" readonly></ion-input>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>  
+            <ion-col col-2></ion-col>
+              <ion-col col-8>
+                <div *ngFor="let item of doc.preguntas;even as isEven;let idx=index" >
+                  <ion-row no-padding [ngClass]="isEven? 'even' : 'odd'" class="pointer">
+                    <ion-col col-1>
+                      {{ item.cvPregunta}}
+                    </ion-col>                    
+                    <ion-col text-center>
+                      {{ item.pregunta}}
+                      <ion-input type="text" placeholder="Proporciones su respuesta" name="respuesta-{{idx}}" [(ngModel)]="item.respuesta" *ngIf="item.tipo=='abierta'" ></ion-input>
+                    </ion-col>                    
+                  </ion-row>
+
+                  <ion-list *ngIf="item.tipo=='cerrada'">
+                    <ion-radio-group [(ngModel)]="item.respuesta" name="respuesta-{{idx}}">
+                      {{item.respuesta}}                    
+                    <div *ngFor="let itemOp of item.opciones;even as isEven;let idy=index;" >
+                        <ion-item>
+                          <ion-label>{{ itemOp.opcion }}</ion-label>
+                          <ion-radio  [value]="itemOp.valor"></ion-radio>
+                        </ion-item>
+                    </div>
+                    </ion-radio-group>
+                    </ion-list>
+                  
+                  <ion-list *ngIf="item.tipo=='multiple'">
+                      {{item.respuesta}}
+                      <ion-item *ngFor="let itemOp of item.opciones;even as isEven;let idy=index;" >
+                        <ion-label>{{itemOp.opcion}}</ion-label>
+                        <ion-checkbox slot="end" [(ngModel)]="itemOp.isChecked" name="respuesta-{{idx}}"></ion-checkbox>
+                      </ion-item>
+                  </ion-list>
+
+                </div>        
+              </ion-col>
+            <ion-col col-2></ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col class="ion-col" *ngIf="!isUpdate">
+              <button ion-button class="submit-btn" full type="submit"  [disabled]="!registerForm.form.valid">Guardar</button>
+            </ion-col>
+            <ion-col class="ion-col" *ngIf="isUpdate">
+              <button ion-button class="submit-btn" full type="button"  (click)="setRespuestas()" [disabled]="!registerForm.form.valid">Borrar</button>
+            </ion-col>
+          </ion-row>
+
+        </form>
+
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

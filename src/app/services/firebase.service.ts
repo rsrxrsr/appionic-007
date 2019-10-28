@@ -35,18 +35,6 @@ export class FirebaseService {
     });
   }
 
-  public addDocumentGetId(coleccion: string, objeto: any){
-    delete objeto.id;
-    return new Promise<any>((resolve, reject) => {
-      let id = this.afs.createId();
-      this.afs.collection(coleccion).doc(id).set(objeto)
-      .then(
-        res => resolve(id),
-        err => reject(err)
-      );
-    });
-  }
-
   public upsertDocument( coleccion: string, id: string, doc: any){
     console.log("Upsert",coleccion,id,doc);
     return new Promise<any>((resolve, reject) => {
@@ -244,8 +232,38 @@ export class FirebaseService {
     })
   }
 
+  public getInstancias(coleccion,region) {
+    console.log('Instancias');
+    let f = new Date();
+    let fecha=f.getFullYear() + "/" + (f.getMonth() +1) + "/" + f.getDate() ;
+    return new Promise<any>((resolve, reject) => {
+      this.consultarColeccion(coleccion).then( snap1 => {
+        snap1.forEach((element1, index1) => {
+          let ref1:string = coleccion+"/"+element1.id+"/instancias";
+          //, ref => ref.where("fhFin", ">", fecha)        
+          let max:any;
+          this.afs.collection(ref1)
+            .snapshotChanges().subscribe(snap2 => {
+              snap2.forEach(element2=>{
+                let doc=element2.payload.doc.data();
+                doc["id"]=element2.payload.doc.id;
+                if(region.includes(doc["idRegion"])) {
+                  //if (!max || max.fhFin<doc["fhFin"]) {
+                    max=doc;
+                  //}  
+                }
+              })
+              console.log("max",max);
+              element1.instancia=max;
+          });   
+        });
+        resolve(snap1);
+      });
+    });
+  }
+
   public getRegiones(coleccion) {
-    console.log('Consultar');
+    console.log('Regiones');
     return new Promise<any>((resolve, reject) => {
     this.consultarColeccion(coleccion).then( snap1 => {
         snap1.forEach((element1, index1) => {
@@ -258,15 +276,46 @@ export class FirebaseService {
               this.consultarColeccion(ref2).then(snap3 =>{
                 this.modelo[coleccion][index1][coleccion][index2][coleccion]=snap3;
               });
+              if (snap1.length==index1+1 && snap2.length==index2+1) {
+                resolve(this.modelo[coleccion]);
+              }
             });
   //
           });   
-        }
-        );
-        resolve(snap1);
+        });
       });
     });
   //
+  }
+
+  setRegiones(idRegion) {
+    console.log("setEdo", idRegion);
+    let coleccion="regiones";
+    if (!idRegion) return;
+    let idx = idRegion.split("/");
+    let idxEdo=null, idxMun=null;
+    this.modelo[coleccion].filter((element,index)=>{
+        if (element.id==idx[1]) {
+          idxEdo=index;
+          this.modelo["estado"]=element;
+          return true;
+        }      
+    });    
+    console.log("setMun", idxEdo);
+    this.modelo[coleccion][idxEdo][coleccion].filter((element,index)=>{
+      if (element.id==idx[3]) {
+         idxMun=index;
+         this.modelo["municipio"]=element;
+         return true;
+      }      
+    });
+    console.log("setCol", idxMun);
+    this.modelo[coleccion][idxEdo][coleccion][idxMun][coleccion].filter((element,index)=>{
+      if (idx.length<=5 && element.id==idx[5]) {
+         this.modelo["colonia"]=element;
+         return true;
+      }      
+    });
   }
 
 // File Upload

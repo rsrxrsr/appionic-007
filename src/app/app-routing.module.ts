@@ -13,7 +13,8 @@ const routes: Routes = [
   { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' },
   { path: 'camara', loadChildren: './camara/camara.module#CamaraPageModule' },
   { path: 'mapa', loadChildren: './mapa/mapa.module#MapaPageModule' },
-  { path: 'usuario', loadChildren: './usuario/usuario.module#UsuarioPageModule' }
+  { path: 'usuario', loadChildren: './usuario/usuario.module#UsuarioPageModule' },
+  { path: 'cuestionario', loadChildren: './cuestionario/cuestionario.module#CuestionarioPageModule' }
   ]
 ;
 

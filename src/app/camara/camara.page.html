@@ -11,9 +11,10 @@
 
   <ion-button (click)="tomarFoto()">Tomar foto</ion-button>
   <ion-button (click)="tomarVideo()">Tomar Video</ion-button>
-  <img src="{{foto}}" *ngIf="foto" />
 
-  <p>urlVideo</p>
+  <p>Foto</p>
+  <img src="{{foto}}" *ngIf="foto" />
+  <p>Video</p>
   <video controls="controls" autoplay preload="metadata" webkit-playsinline="webkit-playsinline" class="videoPlayer">
     <source id="idVideo" #myvideo [src]="urlVideo" type="video/mp4" *ngIf="urlVideo"/>
   </video>
@@ -29,9 +30,9 @@
             <h6 style="text-align:center;">Evidencias</h6>
           </ion-col>
         </ion-row>
-        <div *ngFor="let item of evidencias;even as isEven"  text-wrap>
+        <div *ngFor="let item of evidencias;even as isEven"  (click)="selectRow($event, item)" text-wrap>
           <ion-row no-padding [ngClass]="isEven? 'even' : 'odd'">
-            <ion-col col-2></ion-col>            
+            <ion-col col-1></ion-col>            
             <ion-col col-8>              
               <ion-card *ngIf="item.tipo=='imagen'">
                 <ion-card-header>
@@ -57,6 +58,12 @@
             </ion-col>       
             <ion-col col-1>
               {{item.tipo}}
+            </ion-col>
+            <ion-col col-1>
+              <ion-button (click)="item.delete=!item.delete">
+                <ion-icon name="backspace" *ngIf="!item.delete"></ion-icon>
+                <ion-icon name="flash" *ngIf="item.delete"></ion-icon>
+              </ion-button>    
             </ion-col>
             <ion-col col-1></ion-col>            
           </ion-row>

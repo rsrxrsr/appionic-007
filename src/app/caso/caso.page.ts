@@ -29,25 +29,28 @@ export class CasoPage implements OnInit {
     if (this.firebaseService.modelo["casoEntity"]) {
       this.isUpdate=true;
       this.doc=this.firebaseService.modelo["casoEntity"];
-      let evidencias="caso/"+this.doc.id+"/evidencias";
-      this.firebaseService.consultarColeccion(evidencias)
+      let refEvidencias="caso/"+this.doc.id+"/evidencias";
+      this.firebaseService.consultarColeccion(refEvidencias)
         .then(snap=>this.firebaseService.modelo["evidencias"]=snap)
     } else {
       this.firebaseService.getLocation().then(coords=>{
         this.doc["latitude"]=coords.latitude;
         this.doc["longitude"]=coords.longitude;
         this.getGeoencoder(coords.latitude,coords.longitude)
-          .then(address=>this.doc["address"]=address)
+          .then(address=>{
+            this.doc.id=this.firebaseService.getId();
+            this.doc["idObservador"]=this.firebaseService["usuario"].id;
+            this.doc["address"]=address;
+            this.firebaseService.getFolio("caso").then(snap=>{
+              this.doc["idCase"]=snap.folio;
+              this.firebaseService.modelo["casoEntity"]=this.doc;
+              this.firebaseService.modelo["evidencias"]=[];
+            });      
+          })
       })
-      this.doc.id=this.firebaseService.getId();
-      this.firebaseService.getFolio("caso").then(snap=>{
-        this.doc["idCase"]=snap.folio});
     }
-    this.doc["idObservador"]=this.firebaseService["usuario"].id;
     this.firebaseService.consultarColeccion("clases");
-    this.firebaseService.getRegiones("regiones").then(snap=>{
-      console.log("Regiones", this.firebaseService.modelo['regiones'].length);
-    });
+    this.getRegiones("regiones");
     console.log("init doc", this.doc);
   }
 /*
@@ -70,10 +73,17 @@ export class CasoPage implements OnInit {
     this.firebaseService.upsertDocument(this.coleccion, this.doc.id, this.doc )
       .then(snap=>{
         let ref=this.coleccion+"/"+this.doc.id+"/evidencias";
+        let deletes=0;
         this.firebaseService.modelo["evidencias"].forEach((element, index) => {
-          this.firebaseService.upsertDocument(ref, "sq-"+index, element);
+          if (element.delete) {
+            this.firebaseService.deleteDocument(ref, element.id);
+            deletes++;
+          } else {
+            let id= "sq-"+(index-deletes);
+            this.firebaseService.upsertDocument(ref, id, element);
             //.then(success=>alert("success"),err=>alert(err));
-          });
+          }  
+        });
     });
     this.presentAlert("Caso actualizado"); alert
   }
@@ -81,6 +91,11 @@ export class CasoPage implements OnInit {
   public borrar() {
     this.firebaseService.deleteDocument(this.coleccion, this.doc.id );  
     this.presentAlert("Caso borrado"); 
+  }
+
+  goCamara() {
+    //this.router.navigate(["tabs/tabs/tab1/camara"]);
+    this.router.navigate(["tabs/tabs/tab2/camara/video"]);
   }
 
   salir() {
@@ -95,6 +110,60 @@ export class CasoPage implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  getRegiones(coleccion) {
+    console.log('Consultar');
+  //this.firebaseService.consultarColecciones(coleccion);
+  //
+    this.firebaseService.consultarColeccion(coleccion).then( snap1 => {
+        snap1.forEach((element, index) => {
+          let ref:string = coleccion+"/"+element.id+"/"+coleccion;
+          this.firebaseService.consultarColeccion(ref).then(snap2 =>{
+            this.firebaseService.modelo[coleccion][index][coleccion]=snap2;
+  //
+            snap2.forEach((element2, index2) => {
+              let ref2=ref+"/"+element2.id+"/"+coleccion;
+              this.firebaseService.consultarColeccion(ref2).then(snap3 =>{
+                this.firebaseService.modelo[coleccion][index][coleccion][index2][coleccion]=snap3;
+                if (this.doc["idRegion"] && this.doc["idRegion"].indexOf(element2.id) >=0 && this.isUpdate) this.setRegiones(this.doc["idRegion"]);                  
+              });
+            });
+  //
+          });   
+        });
+    });
+  //
+  }
+
+  setRegiones(idRegion) {
+    console.log("setEdo", idRegion);
+    let coleccion="regiones";
+    if (!idRegion) return;
+    let idx = idRegion.split("/");
+    let idxEdo=null, idxMun=null;
+    this.firebaseService.modelo[coleccion].filter((element,index)=>{
+        if (element.id==idx[1]) {
+          idxEdo=index;
+          this.modelo.estado=element;
+          return true;
+        }      
+    });    
+    console.log("setMun", idxEdo);
+    this.firebaseService.modelo[coleccion][idxEdo][coleccion].filter((element,index)=>{
+      if (element.id==idx[3]) {
+         idxMun=index;
+         this.modelo.municipio=element;
+         return true;
+      }      
+    });
+    console.log("setCol", idxMun);
+    this.firebaseService.modelo[coleccion][idxEdo][coleccion][idxMun][coleccion].filter((element,index)=>{
+      if (idx.length<=5 || element.id==idx[5]) {
+         this.modelo["colonia"]=element;
+         return true;
+      }      
+    });
   }
 
   setIdRegion(coleccion) {
@@ -135,8 +204,4 @@ export class CasoPage implements OnInit {
     });
   }
 
-  goCamara() {
-    //this.router.navigate(["tabs/tabs/tab1/camara"]);
-    this.router.navigate(["tabs/tabs/tab2/camara/video"]);
-  }
 }

@@ -112,13 +112,6 @@ export class UsuarioPage implements OnInit {
   //
   }
 
-  setIdRegion(coleccion) {
-    let ref:string = coleccion+"/"+this.delta.estado.id+"/"+coleccion+"/"+this.delta.municipio.id+"/"+coleccion+"/"+this.delta.colonia.id;
-    this.doc["idRegion"]=ref;
-    this.doc["region"]=this.delta.estado["region"]+"/"+this.delta.municipio["region"]+"/"+this.delta.colonia["region"];
-    this.loadMap(this.delta.colonia);
-  }
-
   setRegiones(idRegion) {
     console.log("setEdo", idRegion);
     let coleccion="regiones";
@@ -149,7 +142,14 @@ export class UsuarioPage implements OnInit {
     });
     this.loadMap(this.delta.colonia);
   }
-   
+
+  setIdRegion(coleccion) {
+    let ref:string = coleccion+"/"+this.delta.estado.id+"/"+coleccion+"/"+this.delta.municipio.id+"/"+coleccion+"/"+this.delta.colonia.id;
+    this.doc["idRegion"]=ref;
+    this.doc["region"]=this.delta.estado["region"]+"/"+this.delta.municipio["region"]+"/"+this.delta.colonia["region"];
+    this.loadMap(this.delta.colonia);
+  }
+
   loadMap(mapa:any){
     console.log("LoadMap", mapa);
     let latitude = Number(mapa.latitude);

@@ -28,12 +28,8 @@ export class CamaraPage implements OnInit {
     private firebaseService: FirebaseService,
     private file: File
   ) {
-    if (this.firebaseService.modelo["casoEntity"]){
-      this.doc=this.firebaseService.modelo["casoEntity"];
-    } 
-    if (this.firebaseService.modelo["evidencias"]){
-      this.evidencias=this.firebaseService.modelo["evidencias"];
-    }
+    this.doc=this.firebaseService.modelo["casoEntity"];
+    this.evidencias=this.firebaseService.modelo["evidencias"];
   }
 
   ngOnInit() {
@@ -44,6 +40,16 @@ export class CamaraPage implements OnInit {
     } else 
     if (medio=="video") {
       this.tomarVideo();
+    }
+  }
+
+  selectRow(event, item){
+    alert(item.tipo);
+    if (item.tipo=="imagen") {
+      this.foto=item.urlPhoto;          
+    } else 
+    if (item.tipo=="video") {
+      this.urlVideo=item.urlPhoto;          
     }
   }
 

@@ -23,7 +23,7 @@ export class CasosPage implements OnInit {
 
   ngOnInit() {
     this.firebaseService.consultarColeccion(this.coleccion).then(snap=>{
-      this.items=snap;
+      this.items=this.firebaseService.modelo[this.coleccion];
     })
   }
 
