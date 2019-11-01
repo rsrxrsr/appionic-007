@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>usuario</ion-title>
+    <ion-title>Perfil Usuario</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>    
   </ion-toolbar>
 </ion-header>
 
@@ -20,45 +23,31 @@
           <ion-list inset>
             <ion-item>
               <ion-label stacked>Usuario</ion-label>
-              <ion-input type="text" placeholder="Name" name="name" [(ngModel)]="doc.usuario" required></ion-input>
+              <ion-input type="text" placeholder="Name" name="name" [(ngModel)]="doc.usuario" readonly></ion-input>
             </ion-item>
             <ion-item>
               <ion-label stacked>Correo</ion-label>
-              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="doc.correo" required></ion-input>
+              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="doc.correo" readonly></ion-input>
             </ion-item>
             <ion-item>
               <ion-label>Roles</ion-label>
-              <ion-select name="roles" [(ngModel)]="doc.roles" multiple="true">
-                <ion-select-option>Ejecutivo</ion-select-option>
-                <ion-select-option>Administrador</ion-select-option>
-                <ion-select-option>Supervisor</ion-select-option>
-                <ion-select-option>Observador</ion-select-option>
-              </ion-select>
+              <ion-input type="text" name="roles" [(ngModel)]="doc.roles" readonly></ion-input>
             </ion-item>
             <ion-item>
               <ion-label>Estado</ion-label>
-              <ion-select [(ngModel)]="delta.estado" name="idEdo">
-                <ion-select-option *ngFor="let opcion of firebaseService.modelo[regiones]" [value]="opcion" >{{opcion.nombre}}</ion-select-option>                 
-              </ion-select>
+              <ion-input type="text" name="estado" [(ngModel)]="delta.estado.nombre" readonly></ion-input>
             </ion-item>                  
             <ion-item>
               <ion-label>Municipio</ion-label>
-              <ion-select [(ngModel)]="delta.municipio" name="idMun" >
-                <ion-select-option *ngFor="let opcion of delta.estado[regiones]" [value]="opcion" >{{opcion.nombre}}</ion-select-option>                 
-              </ion-select>
+              <ion-input type="text" name="municipio" [(ngModel)]="delta.municipio.nombre" readonly></ion-input>
             </ion-item>   
             <ion-item>
               <ion-label>Colonia</ion-label>
-              <ion-select [(ngModel)]="delta.colonia" name="idCol" (ionChange)="setIdRegion(regiones)">
-                <ion-select-option *ngFor="let opcion of delta.municipio[regiones]" [value]="opcion" >{{opcion.nombre}}</ion-select-option>                 
-              </ion-select>
+              <ion-input type="text" name="colonia" [(ngModel)]="delta.colonia.nombre" readonly></ion-input>
             </ion-item> 
             <ion-item>
               <ion-label>Estatus</ion-label>
-              <ion-select name="estatus" [(ngModel)]="doc.estatus">
-                <ion-select-option>Activo</ion-select-option>
-                <ion-select-option>Inactivo</ion-select-option>
-              </ion-select>
+              <ion-input type="text" name="estatus" [(ngModel)]="doc.estatus" readonly></ion-input>
             </ion-item>
           </ion-list>
         </ion-col>
@@ -80,7 +69,7 @@
         <ion-label stacked>Region</ion-label>
         <ion-input type="region" placeholder="Región" name="region" value="{{doc.idRegion}}" required></ion-input>
       </ion-item>
-  -->  
+    
         <ion-row>
           <ion-col class="usuario-col" *ngIf="!isUpdate">
             <button ion-button class="submit-btn" full type="submit"  [disabled]="!registerForm.form.valid">Register</button>
@@ -92,7 +81,7 @@
             <button ion-button class="submit-btn" full type="button"  (click)="borrar()" [disabled]="!registerForm.form.valid">Borrar</button>
           </ion-col>
         </ion-row>
-  
+-->
       </form>
     
 </ion-content>

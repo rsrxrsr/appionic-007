@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>cuestionario</ion-title>
+    <ion-title>Encuesta</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>  
   </ion-toolbar>
 </ion-header>
 
@@ -30,7 +33,6 @@
                 <ion-item>
                     <ion-label stacked>Encuesta</ion-label>
                     <ion-input type="text" placeholder="Encuesta" name="encuesta" [ngModel]="doc.encuesta" readonly></ion-input>
-                    <ion-input type="text" placeholder="idEncuesta" name="idEncuesta" [ngModel]="doc.id" readonly></ion-input>
                 </ion-item>
                 <ion-item>
                     <ion-label stacked>Descripción</ion-label>

@@ -121,6 +121,23 @@ export class FirebaseService {
     })
   }
 
+  public watchColeccion(coleccion: string, componente:any){
+    return new Promise<any>((resolve, reject) => {
+      this.afs.collection(coleccion).snapshotChanges().subscribe(querySnapshot => {
+        var snapshot = [];
+        querySnapshot. forEach(function(doc) {
+          var item=doc.payload.doc.data();
+          item['id']=doc.payload.doc.id;
+          snapshot.push(item);
+        });
+        console.log("Consulta: ", coleccion, snapshot );
+        this.modelo[coleccion]=snapshot;
+        componente.watchColeccion();
+        resolve(snapshot);
+      })      
+    })
+  }
+
   public getColeccion(coleccion: string){
     return new Promise<any>((resolve, reject) => {
       this.afs.collection(coleccion).snapshotChanges().subscribe(querySnapshot => {

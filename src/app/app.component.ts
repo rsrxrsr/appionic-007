@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController  } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -21,6 +21,7 @@ export class AppComponent {
     private statusBar: StatusBar,
     private fcm: FCM,
     private router: Router,
+    public toastController: ToastController,
     private firebase: FirebaseService
   ) {
     this.initializeApp();
@@ -34,32 +35,68 @@ export class AppComponent {
       this.fcm.getToken().then(token => {
         //alert('Get token:'+token);
         this.firebase.modelo["token"]=token;
-        console.log("token",token);
+        //console.log("token",token);
         this.firebase.addDocument("notificaciones",{"user":"user","token":token,msg:'Get'});
       });
       this.fcm.onTokenRefresh().subscribe(token => {
         //alert('Refresh:'+token);
         this.firebase.modelo["control"]={"token":token};
-        console.log("token",token);
+        //console.log("token",token);
         this.firebase.addDocument("notificaciones",{"user":"user","token":token,msg:'Refresh'});
       });
       this.fcm.onNotification().subscribe(data => {
-        console.log(data);
+        //console.log(data);
         let doc:any;
         doc = JSON.parse(data.mensaje);
+        let estatus:string=(this.firebase["usuario"]) ? 'foreground' : 'background';
+        this.presentToastWithOptions(estatus,doc.accion);
+        /*
         if (data.wasTapped) {
-          console.log('Received in background ',data);
-          alert('Background msg: '+doc.accion);
-          this.router.navigate([data.page,data.mensaje]);
+          this.presentToastWithOptions('background');
+          //console.log('Received in background ',data);
+          //alert('Background msg: '+doc.accion);
+          this.router.navigate([data.page,data.mensaje,'background']);
         } else {
-          console.log('Received in foreground ',data);
-          alert('Foreground msg: '+doc.accion);
-          this.router.navigate([data.page,data.mensaje]);
+          this.presentToastWithOptions('foreground');
+          //console.log('Received in foreground ',data);
+          //alert('Foreground msg: '+doc.accion);
+          this.router.navigate([data.page,data.mensaje,'foreground']);
         }
+        */
       });
-      this.fcm.subscribeToTopic('people');
-      this.fcm.unsubscribeFromTopic('marketing');
+      //this.fcm.subscribeToTopic('observadores');
+      //this.fcm.unsubscribeFromTopic('observadores');
       // End-FCM
     });
-  }    
+  }
+  
+  async presentToastWithOptions(estatus:string, mensaje:string) {
+    const toast = await this.toastController.create({
+      header: 'Tienes una nueva actividad',
+      message: mensaje,
+      position: 'top',
+      buttons: [
+        {
+          side: 'start',
+          icon: 'star',
+          text: 'Acciones',
+          handler: () => {
+            if (estatus=='foreground') {
+              this.router.navigate(['/acciones']);
+            } else {
+              this.firebase["start"]='/acciones';
+            } 
+        }
+        }, {
+          text: 'Ok',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    toast.present();
+  }
+  
 }

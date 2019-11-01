@@ -18,7 +18,7 @@ export class UsuarioPage implements OnInit {
   forma = {id:'', confirmation_password: '' };
   doc = { id: "",pass:"",foto:"",usuario:"",correo:"",roles:"",estatus:""};
   file:any;
-  delta={estado:{id:''}, municipio:{id:''},colonia:{id:''},safeUrl:""};
+  delta={estado:{id:'',nombre:''}, municipio:{id:'',nombre:''},colonia:{id:'',nombre:''},safeUrl:""};
 
   map:any;
 

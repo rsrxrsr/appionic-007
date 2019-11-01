@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 declare var google;
 
@@ -9,13 +10,17 @@ declare var google;
 })
 export class MapaPage implements OnInit {
 //@ViewChild("map", {static:false}) mapEle:ElementRef;
-  item={latitude:19.36,longitude:-99.18,address:"somewhere beyonce de sea"}; 
+  item={latitude:19.36,longitude:-99.18,address:"Dirección"}; 
   map:any;
  
-  constructor() { }
+  constructor(private router:Router) {}
   
   ngOnInit() {
     this.loadMap();
+  }
+  
+  salir() {
+    this.router.navigate(['casos']);
   }
 
   loadMap(){

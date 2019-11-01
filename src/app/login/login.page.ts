@@ -36,7 +36,13 @@ export class LoginPage implements OnInit {
           this.usuario["token"]=this.firebaseService.modelo["token"] ? this.firebaseService.modelo["token"] : "token";
           this.firebaseService["usuario"]=this.usuario;
           this.firebaseService.updateDocument("usuarios",this.usuario.id, this.usuario);
-          this.router.navigate(['/casos']);
+          if (this.firebaseService["start"]) {
+            this.router.navigate([this.firebaseService["start"]]);
+            this.firebaseService["start"]=null;
+          } else {
+            this.router.navigate(['/casos']);
+          }
+          this.usuario = {id:'', correo: '', pass: '', estatus:''};
         } else {
           this.presentAlert("The password confirmation does not match.");
         }

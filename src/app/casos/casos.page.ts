@@ -12,18 +12,19 @@ export class CasosPage implements OnInit {
 
   public coleccion="caso";
   public items=[];
-  public searchData;
+  public searchData:string="";
   public swFind=false;
   public toggle=[];
 
   constructor(
     private router:Router,
     public firebaseService: FirebaseService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.firebaseService.consultarColeccion(this.coleccion).then(snap=>{
-      this.items=this.firebaseService.modelo[this.coleccion];
+//    this.firebaseService.consultarColeccion(this.coleccion).then(snap=>{
+    this.firebaseService.watchColeccion(this.coleccion, this).then(snap=>{
+    this.items=this.firebaseService.modelo[this.coleccion].slice();
     })
   }
 
@@ -34,12 +35,18 @@ export class CasosPage implements OnInit {
   }
 
   public setFilter(searchData, data){
+    const searchValue = document.querySelector('ion-searchbar').value;
+    console.log("Filter", searchData, searchValue)
     this.swFind=true;
-    this.items = data.filter((item) => {
+    this.items = data.filter(item => {
       let searchText=item.titulo+item.idClassification+item.municipio;
-      return searchText.toLowerCase().indexOf(searchData)>-1;
+      return searchText.toLowerCase().indexOf(searchValue.toLowerCase())>-1;
     });
     this.swFind=false;
+  }
+
+  public watchColeccion() {
+    this.setFilter('searchValue',this.firebaseService.modelo[this.coleccion]);
   }
 
   public setSort(item) {

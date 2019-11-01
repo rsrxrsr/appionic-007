@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { MediaCapture, MediaFile, CaptureError, CaptureVideoOptions } from '@ionic-native/media-capture/ngx';
 import { File } from '@ionic-native/file/ngx';
@@ -22,6 +22,7 @@ export class CamaraPage implements OnInit {
   //@ViewChild("myvideo", {static: false} ) private myVideo: ElementRef;
 
   constructor(
+    private router:Router,
     private activatedRoute: ActivatedRoute,
     private camera: Camera,
     private mediaCapture: MediaCapture,
@@ -51,6 +52,10 @@ export class CamaraPage implements OnInit {
     if (item.tipo=="video") {
       this.urlVideo=item.urlPhoto;          
     }
+  }
+
+  salir() {
+    this.router.navigate(['casos']);
   }
 
   tomarFoto() {
