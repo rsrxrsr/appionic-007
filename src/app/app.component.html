@@ -1,26 +1,47 @@
 <ion-app>
   <!--<ion-split-pane>-->
-  <ion-menu-toggle autoHide="true"><ion-menu #mymenu contentId="content1" side="end" type="push">
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Menu</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
-      <ion-list>
-        <ion-item><a routerLink="/usuario">Perfil</a></ion-item>
-        <ion-item><a routerLink="/casos">Casos</a></ion-item>
-        <ion-item><a routerLink="/acciones">Acciones</a></ion-item>
-        <ion-item><a routerLink="/cuestionario">Encuestas</a></ion-item>
-        <ion-item><a menuClose>Cerrar Menu</a></ion-item>
-        <ion-item><a routerLink="/login">Salir</a></ion-item>
+  <ion-menu-toggle autoHide="true"
+    ><ion-menu #mymenu contentId="content1" side="end" type="push">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Menu</ion-title>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content color="medium">
+        <ion-item color="medium" routerLink="/usuario">
+          <ion-icon name="person" mode="ios"></ion-icon> &nbsp;
+          <b>Perfil</b></ion-item
+        >
+
+        <ion-item color="medium" class="opcionMenu" routerLink="/casos">
+          <ion-icon name="copy" mode="ios"></ion-icon> &nbsp;
+          <b>Casos</b></ion-item
+        >
+
+        <ion-item color="medium" class="opcionMenu" routerLink="/acciones">
+          <ion-icon name="create" mode="ios"></ion-icon> &nbsp;
+          <b>Acciones</b>
+        </ion-item>
+        <ion-item color="medium" class="opcionMenu" routerLink="/cuestionario">
+          <ion-icon name="paper" mode="ios"></ion-icon>
+          &nbsp;
+          <b>Encuestas</b>
+        </ion-item>
+        <!-- <ion-item color="light" class="opcionMenu" menuClose
+          >Cerrar Menu
+        </ion-item> -->
+        <ion-item color="medium" class="opcionMenu" routerLink="/login">
+          <ion-icon name="power" mode="ios"></ion-icon>
+          &nbsp;
+          <b>Salir</b>
+        </ion-item>
         <!--
           <ion-item (click)="mymenu.close()"><a>Cerrar Menu</a></ion-item>
           <ion-item><button ion-button menuClose><a>Cerrar Menu</a></button></ion-item>
         -->
-      </ion-list>
-    </ion-content>
-  </ion-menu></ion-menu-toggle>
+      </ion-content>
+    </ion-menu></ion-menu-toggle
+  >
   <ion-router-outlet id="content1" main></ion-router-outlet>
   <!--</ion-split-pane>-->
 </ion-app>

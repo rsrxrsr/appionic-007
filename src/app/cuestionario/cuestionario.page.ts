@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 import {FirebaseService} from '../services/firebase.service';
 
@@ -17,17 +18,23 @@ export class CuestionarioPage implements OnInit {
 
   constructor(
     public firebaseService: FirebaseService,
-    private alertController: AlertController
-    ) {}
+    private alertController: AlertController,
+    private router : Router
+    ) {
+      if (!this.firebaseService["usuario"]) {
+        this.router.navigate(["/login"]);
+        return;
+      }   
+    }
 
   ngOnInit() {
     console.log("ngOnInit");
-    this.delta.idInstancia="encuestas/EyiOj3b1ejzm96UvbCON/instancias/boOOkwpfTbYi6q9x71eH";
     this.delta.idRegion=this.firebaseService.modelo["usuarios"][0].idRegion;
     this.delta.idObservador=this.firebaseService.modelo["usuarios"][0].id;
-    //this.firebaseService.consultarColeccion("encuestas");
     this.firebaseService.getInstancias("encuestas",this.delta.idRegion);
-    this.consultarEncuesta();
+    //this.delta.idInstancia="encuestas/EyiOj3b1ejzm96UvbCON/instancias/boOOkwpfTbYi6q9x71eH";
+    //this.firebaseService.consultarColeccion("encuestas");
+    //this.consultarEncuesta();
   }
 
   setIdRegion(){
@@ -40,6 +47,7 @@ export class CuestionarioPage implements OnInit {
     console.log('Consultar', this.delta);
     //
     let refI:string, refE:string, refP:string, refO:string ; 
+    this.delta.idInstancia="encuestas/"+this.delta.encuesta["id"]+"/instancias/"+this.delta.encuesta["instancia"]["id"];
     refI=this.delta.idInstancia;
     this.firebaseService.docById(refI).then( docI => {
       refE=refI.substring(0,refI.indexOf('/i'));

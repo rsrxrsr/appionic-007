@@ -24,3 +24,71 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.NOtema-app {
+    background-color: #fff;
+    &::after {
+      content: "";
+      background: url("assets/imgs/bg.jpg") no-repeat;
+      background-size: cover;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+      z-index: 0;
+    }
+  }
+
+  .algo-ion-content {
+    background-color: #fff;
+    &::after {
+      content: "";
+      //background: url("assets/imgs/bg.jpg") no-repeat;
+      background-image: url("assets/imgs/bg.jpg");
+      background-size: cover;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+      z-index: 0;
+    }
+  }
+
+  ion-icon-2 {
+    background-color: #fff;
+    }
+
+  .tema-app {
+    background: url("assets/imgs/bg.jpg");
+    }
+
+  ion-content {
+    --background: url('/assets/img/background/background.png') no-repeat 100% 100%;
+    }  
+  
+  .hdr {
+      size:21;
+      background-color: navy;
+      color: white
+    
+    }
+    
+    //rgba(0, 0, 255, 0.1);
+    .first {
+      background:rgba(0,0,0,0.3); 
+      background-color: rgba(0, 0, 255, 0.1);
+    }
+    
+    .even {
+      background-color: #f2f2f2
+    }
+    
+    .forma {
+      height:'300';
+      width:'500'
+    }
+    
+    .pointer {cursor: pointer;}
+    

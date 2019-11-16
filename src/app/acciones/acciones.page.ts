@@ -14,10 +14,14 @@ export class AccionesPage implements OnInit {
     private router: Router,
     public firebaseService:FirebaseService
   ) {
+    if (!this.firebaseService["usuario"]) {
+      this.router.navigate(["/login"]);
+      return;
+    } 
   }
 
   ngOnInit() {
-    this.firebaseService.consultarColeccion("acciones");
+    this.firebaseService.findAcciones("acciones", "estatus","==","Activo")
   }
         
   public selectRow(event, item ){

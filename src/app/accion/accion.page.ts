@@ -14,7 +14,7 @@ export class AccionPage implements OnInit {
   coleccion="acciones";
   isUpdate=false; 
   createSuccess = false;
-  doc = {id:"",tipo:"",idCaso:"",accion:"",descripcion:"",fhAlta:"",fhFinPlan:"",responsable:"",informe:"",avance:"",fhFin:"",estatus:""};
+  doc = {id:"",tipo:"",idCaso:"",accion:"",descripcion:"",fhAlta:"",fhFinPlan:"",responsable:"",informe:"",avance:"",fhFin:"",estatus:"",idEncuesta:""};
   delta:any; 
 
   constructor(
@@ -28,7 +28,7 @@ export class AccionPage implements OnInit {
   ngOnInit() {
     console.log('ngOnInit');
     this.doc = JSON.parse(this.activatedRoute.snapshot.params["item"]);
-    this.firebaseService.consultarColeccion("encuestas");
+    this.firebaseService.getColeccion("encuestas");
   }
 
   public registrar() {

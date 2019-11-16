@@ -14,7 +14,7 @@ export const CONEXION_BD = {
     appId: "1:836343510085:web:61f97621eb7846dbe4df2c",
     measurementId: "G-231RSH26DQ"
   }
-*/
+//
   firebase: {
     apiKey: "AIzaSyAd1bVphgVETZZ6mYbh7RxK5yMZ1XJEU_0",
     authDomain: "observatorio-d6ad7.firebaseapp.com",
@@ -23,6 +23,18 @@ export const CONEXION_BD = {
     storageBucket: "observatorio-d6ad7.appspot.com",
     messagingSenderId: "133886977164",
     appId: "1:133886977164:web:a949779686bf2390"
+  }
+  */
+
+  firebase : {
+    apiKey: "AIzaSyBOQckJbLo8FqjCtFfbEh_4ts3QEUUECBs",
+    authDomain: "pm-soluciones.firebaseapp.com",
+    databaseURL: "https://pm-soluciones.firebaseio.com",
+    projectId: "pm-soluciones",
+    storageBucket: "pm-soluciones.appspot.com",
+    messagingSenderId: "635721467659",
+    appId: "1:635721467659:web:b61ae66d61360ceba5840e",
+    measurementId: "G-SQHG4HWFYZ"
   }
   
 };

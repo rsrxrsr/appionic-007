@@ -1,10 +1,17 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Acciones</ion-title>
-    <ion-buttons slot="end">
-      <ion-menu-button autoHide="true"></ion-menu-button>
-    </ion-buttons>
-  </ion-toolbar>
+  <ion-row style="background-color:#96a3b2;height: 100%;">
+    <ion-col size="2" style="background-color: #2a4a7c;" text-center>
+      <div>
+        <img src="assets/imgs/logo1.png" alt="" />
+      </div>
+    </ion-col>
+    <ion-col size="8" text-center>
+      <p style="color: white;"><b>Acciones</b></p>
+    </ion-col>
+    <ion-col size="2" style="background-color:#2a4a7c;">
+      <b><ion-menu-button class="menuHam"></ion-menu-button></b>
+    </ion-col>
+  </ion-row>
 </ion-header>
 
 <ion-content padding class="tema-app">
@@ -14,48 +21,57 @@
   </div>
   <!-- -->
   <ion-grid>
-    <ion-row no-padding class="hdr">
-      <ion-col>
-        Tipo
-      </ion-col>
-      <ion-col>
-        Acción
-      </ion-col>
-      <ion-col>
-        Fecha Alta
-      </ion-col>
-      <ion-col>
-        Fecha Fin Plan
-      </ion-col>
-      <ion-col>
-        % Avance
-      </ion-col>
-      <ion-col>
-      </ion-col>     
-    </ion-row>
-    <div *ngFor="let item of this.firebaseService.modelo['acciones'];even as isEven" (click)="selectRow($event, item)" text-wrap>
-      <ion-row no-padding [ngClass]="isEven? 'even' : 'odd'" class="pointer">            
-        <ion-col>
-          {{ item.tipo }}
-        </ion-col>
-        <ion-col>
-          {{ item.accion }}
-        </ion-col>
-        <ion-col>
-          {{ item.fhAlta }}
-        </ion-col>
-        <ion-col>
-            {{ item.fhFinPlan }}
-        </ion-col>
-        <ion-col>
-          {{ item.avance }}
-      </ion-col>
-      <ion-col>
-          <ion-icon>
-              <ion-icon name="eye" item-start title="Ver Detalle"></ion-icon>
-          </ion-icon>
-        </ion-col>     
+    <div
+      *ngFor="
+        let item of this.firebaseService.modelo['acciones'];
+        even as isEven
+      "
+      (click)="selectRow($event, item)"
+      text-wrap
+    >
+      <ion-card class="card ion-padding">
+        <ion-row>
+          <ion-col size="5" class="celdasNegritas">
+            <b> Tipo:</b>
+          </ion-col>
+          <ion-col size="7" class="celdasNegritas">
+            {{ item.tipo }}
+          </ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col size="5" class="celdasNegritas">
+            <b>Acción:</b>
+          </ion-col>
+          <ion-col size="7" class="celdasNegritas">
+            {{ item.accion }}
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size="5" class="celdasNegritas">
+            <b>Fecha alta:</b>
+          </ion-col>
+          <ion-col size="7" class="celdasNegritas">
+            {{ item.fhAlta | date: "dd-MM-yy HH:mm:ss" }}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="5" class="celdasNegritas">
+            <b>Fecha fin:</b>
+          </ion-col>
+          <ion-col size="7" class="celdasNegritas">
+            {{ item.fhFinPlan }}
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="2" push="8">
+            <ion-button class="btnDetalle">
+              <ion-icon name="arrow-forward" mode="ios"> </ion-icon>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-card>
     </div>
   </ion-grid>
 </ion-content>

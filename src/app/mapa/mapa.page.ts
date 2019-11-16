@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { FirebaseService } from "../services/firebase.service";
+
 declare var google;
 
 @Component({
@@ -10,12 +12,19 @@ declare var google;
 })
 export class MapaPage implements OnInit {
 //@ViewChild("map", {static:false}) mapEle:ElementRef;
-  item={latitude:19.36,longitude:-99.18,address:"Dirección"}; 
+  //item={latitude:19.36,longitude:-99.18,address:"Dirección"}; 
+  item:any;
   map:any;
  
-  constructor(private router:Router) {}
+  constructor(
+    private router:Router,
+    private firebaseService: FirebaseService
+  ) {}
   
   ngOnInit() {
+    if (this.firebaseService.modelo["casoEntity"]) {
+      this.item=this.firebaseService.modelo["casoEntity"];
+      }
     this.loadMap();
   }
   

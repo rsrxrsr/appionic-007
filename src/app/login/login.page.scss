@@ -1,0 +1,45 @@
+ion-content {
+  width: 100%;
+  height: 100%;
+  --background: url("/assets/imgs/fondo.jpg") 0 0/100% 100% no-repeat;
+  min-height: calc(100vh - 70px);
+}
+.espacio {
+  height: 50px;
+  width: 50px;
+}
+.input {
+  border: 5px solid #cad0d8;
+  border-radius: 53px;
+  background-color: #cad0d8;
+}
+.fondoInput {
+  background-color: #cad0d8;
+}
+.boton {
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+  color: white;
+}
+img.imagen {
+  width: 200px;
+  height: 200px;
+}
+
+.footer {
+  bottom: 0;
+}
+.formulario {
+  top: 49%; // no funciona por el posicionamiento
+}
+.fndBoton {
+  width: 100%;
+  height: 100%;
+}
+.contrasena {
+  color: #2a4a7c;
+}
+ion-button {
+  --background: #2a4a7c !important;
+}

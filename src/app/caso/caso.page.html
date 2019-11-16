@@ -1,104 +1,223 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button slot="start" (click)="salir()"><ion-icon name="arrow-round-up"></ion-icon></ion-button>    
+    <ion-button
+      slot="start"
+      (click)="salir()"
+      fill="clear"
+      style="color: white;"
+      ><ion-icon name="arrow-back" mode="ios"></ion-icon
+    ></ion-button>
     <ion-title>Caso</ion-title>
     <!--<a routerLink="camara" slot="end" class="button"><ion-icon name="camera"></ion-icon></a>-->
-    <ion-button slot="end" routerLink="/tabs/tabs/tab2/camara/camara"><ion-icon name="camera"></ion-icon></ion-button>    
-    <ion-button slot="end" (click)="goCamara()"><ion-icon name="videocam"></ion-icon></ion-button>    
+    <ion-button
+      slot="end"
+      routerLink="/tabs/tabs/tab2/camara/camara"
+      fill="clear"
+      style="color: white;"
+      ><ion-icon name="camera" mode="ios"></ion-icon
+    ></ion-button>
+    <ion-button
+      slot="end"
+      (click)="goCamara()"
+      style="color: white;"
+      fill="clear"
+      ><ion-icon name="videocam"></ion-icon
+    ></ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding class="tema-app">
-  <div padding-horizontal text-center >
-    <img src="../../assets/imgs/text.png" alt="Observador ciudadano">
+  <div padding-horizontal text-center>
+    <img src="../../assets/imgs/text.png" alt="Observador ciudadano" />
   </div>
-  <ion-grid>  
-    <ion-row>
-      <ion-col col-2></ion-col>
-      <ion-col col-8>  
-  
-      <form (ngSubmit)="actualizar()" #registerForm="ngForm" >
-        <ion-row>
-          <ion-col>
-            <ion-list inset>
-              <ion-item>
-                <ion-label stacked>Folio</ion-label>
-                <ion-input type="text" name="idCase" [(ngModel)]="doc.idCase"></ion-input>
-                <ion-label>Fecha:</ion-label>
-                <ion-datetime name="fecha" displayFormat="DD/MM/YYYY HH:mm:ss" min="2019" max="2020" [(ngModel)]="doc.dateCreation" readonly></ion-datetime>
-              </ion-item>
-              <ion-item>
-                <ion-label stacked>Caso</ion-label>
-                <ion-input type="text" name="titulo" [(ngModel)]="doc.titulo"></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-label stacked>Clasificación</ion-label>
-                <ion-select name="clasificacion" [(ngModel)]="doc.idClassification" >
-                  <ion-select-option *ngFor="let opcion of firebaseService.modelo['clases']" [value]="opcion.clase" >{{opcion.clase}}</ion-select-option>                 
-                </ion-select>
-              </ion-item>
-              <ion-item>
-                <ion-label stacked>Riesgo</ion-label>
-                <ion-select name="riesgo" [(ngModel)]="doc.riesgo" >
-                  <ion-select-option>Alto</ion-select-option>
-                  <ion-select-option>Medio</ion-select-option>
-                  <ion-select-option>Bajo</ion-select-option>
-                </ion-select>    
-              </ion-item>
-              <ion-item>
-                <ion-label stacked>Impacto</ion-label>
-                <ion-select name="impacto" [(ngModel)]="doc.impacto" >
-                  <ion-select-option>Alto</ion-select-option>
-                  <ion-select-option>Medio</ion-select-option>
-                  <ion-select-option>Bajo</ion-select-option>
-                </ion-select>    
-              </ion-item>
-              <ion-item>
-                <ion-label stacked>Descripción</ion-label>
-                <ion-textarea name="descripcion" [(ngModel)]="doc.description" color="blue"></ion-textarea>
-              </ion-item>
-              <ion-item>
-                <ion-label>Estado</ion-label>
-                <ion-select [(ngModel)]="modelo.estado" name="estado">
-                  <ion-select-option *ngFor="let opcion of firebaseService.modelo['regiones']" [value]="opcion" >{{opcion.nombre}}</ion-select-option>                 
-                </ion-select>
-              </ion-item>
-                
-              <ion-item>
-                <ion-label>Municipio</ion-label>
-                <ion-select [(ngModel)]="modelo.municipio" name="municipio" (ionChange)="setIdRegion('regiones')">
-                  <ion-select-option *ngFor="let opcion of modelo.estado['regiones']" [value]="opcion" >{{opcion.nombre}}</ion-select-option>                 
-                </ion-select>
-              </ion-item> 
+  <!-- codigo ordenado -->
+  <ion-grid>
+    <form (ngSubmit)="actualizar()" #registerForm="ngForm">
+      <ion-row>
+        <ion-col size="12">
+          <ion-label stacked>Folio:</ion-label>
+        </ion-col>
+        <ion-col class="input" size="12">
+          <ion-input
+            class="fondoInput"
+            type="text"
+            name="idCase"
+            [(ngModel)]="doc.idCase"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-label>Fecha:</ion-label>
+        </ion-col>
+        <ion-col size="12" class="input">
+          <ion-datetime
+            name="fecha"
+            class="fondoInput"
+            displayFormat="DD/MM/YYYY HH:mm:ss"
+            min="2019"
+            max="2020"
+            [(ngModel)]="doc.dateCreation"
+            readonly
+          ></ion-datetime>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-label stacked>Caso:</ion-label>
+        </ion-col>
+        <ion-col size="12" class="input">
+          <ion-input
+            class="fondoInput"
+            type="text"
+            name="titulo"
+            [(ngModel)]="doc.titulo"
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+      <br />
+      <ion-row>
+        <ion-col size="12">
+          <ion-item color="light">
+            <ion-label stacked>Clasificación</ion-label>
+            <ion-select name="clasificacion" [(ngModel)]="doc.idClassification">
+              <ion-select-option
+                *ngFor="let opcion of firebaseService.modelo['clases']"
+                [value]="opcion.clase"
+                >{{ opcion.clase }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item color="light">
+            <ion-label stacked>Riesgo</ion-label>
+            <ion-select name="riesgo" [(ngModel)]="doc.riesgo">
+              <ion-select-option>Alto</ion-select-option>
+              <ion-select-option>Medio</ion-select-option>
+              <ion-select-option>Bajo</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item color="light">
+            <ion-label stacked>Impacto</ion-label>
+            <ion-select name="impacto" [(ngModel)]="doc.impacto">
+              <ion-select-option>Alto</ion-select-option>
+              <ion-select-option>Medio</ion-select-option>
+              <ion-select-option>Bajo</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-label stacked>Descripción:</ion-label>
+        </ion-col>
+        <ion-col size="12" class="input">
+          <ion-textarea
+            class="fondoInput"
+            name="descripcion"
+            [(ngModel)]="doc.description"
+          ></ion-textarea>
+        </ion-col>
+      </ion-row>
+      <br />
+      <ion-row>
+        <ion-col size="12">
+          <ion-item color="light">
+            <ion-label>Estado</ion-label>
+            <ion-select [(ngModel)]="modelo.estado" name="estado">
+              <ion-select-option
+                *ngFor="let opcion of firebaseService.modelo['regiones']"
+                [value]="opcion"
+                >{{ opcion.nombre }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-item color="light">
+            <ion-label>Municipio</ion-label>
+            <ion-select
+              [(ngModel)]="modelo.municipio"
+              name="municipio"
+              (ionChange)="setIdRegion('regiones')"
+            >
+              <ion-select-option
+                *ngFor="let opcion of modelo.estado['regiones']"
+                [value]="opcion"
+                >{{ opcion.nombre }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <ion-label stacked>Dirección:</ion-label>
+        </ion-col>
+        <ion-col size="12" class="input">
+          <ion-textarea
+            class="fondoInput"
+            name="direccion"
+            [(ngModel)]="doc.address"
+          ></ion-textarea>
+        </ion-col>
+      </ion-row>
+      <br /><br />
 
-              <ion-item>
-                <ion-label stacked>Dirección</ion-label>
-                <ion-textarea name="direccion" [(ngModel)]="doc.address"></ion-textarea>
-              </ion-item>
-            </ion-list>
-          </ion-col>
-        </ion-row>
-        <!-- -->
-        <ion-row>
-          <ion-col class="ion-col" *ngIf="!isUpdate">
-            <button ion-button class="submit-btn" full type="submit"  [disabled]="!registerForm.form.valid">Registrar</button>
-          </ion-col>
-          <ion-col class="ion-col" *ngIf="isUpdate">
-            <button ion-button class="submit-btn" full type="button"  (click)="actualizar()" [disabled]="!registerForm.form.valid">Actualizar</button>
-          </ion-col>
-          <ion-col class="ion-col" *ngIf="isUpdate">
-            <button ion-button class="submit-btn" full type="button"  (click)="borrar()" [disabled]="!registerForm.form.valid">Borrar</button>
-          </ion-col>
-          <ion-col class="ion-col">
-            <button ion-button class="submit-btn" full type="button"  (click)="salir()" >  Salir&nbsp;<ion-icon name="arrow-round-up"></ion-icon></button>
-          </ion-col>
-        </ion-row>
-        <!-- -->        
-      </form>
+      <ion-row>
+        <ion-col size="12" *ngIf="!isUpdate">
+          <ion-button
+            type="submit"
+            [disabled]="!registerForm.form.valid"
+            class="boton"
+            shape="round"
+            expand="full"
+            >Registrar</ion-button
+          >
+        </ion-col>
+        <ion-col size="12" *ngIf="isUpdate">
+          <ion-button
+            class="boton"
+            expand="full"
+            shape="round"
+            (click)="actualizar()"
+            [disabled]="!registerForm.form.valid"
+            >Actualizar</ion-button
+          >
+        </ion-col>
+      </ion-row>
 
-      </ion-col>
-    </ion-row>
-    <ion-row></ion-row>
-    <ion-row></ion-row>
-  </ion-grid>       
+      <ion-row>
+        <!-- <ion-col size="12" *ngIf="isUpdate">
+          <ion-button
+            (click)="borrar()"
+            expand="full"
+            shape="round"
+            [disabled]="!registerForm.form.valid"
+            class="boton"
+            >Borrar</ion-button
+          >
+        </ion-col> -->
+        <ion-col size="12">
+          <ion-button
+            (click)="salir()"
+            expand="full"
+            class="boton"
+            shape="round"
+          >
+            Salir
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
 </ion-content>

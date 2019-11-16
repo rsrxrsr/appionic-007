@@ -1,47 +1,78 @@
-<ion-header>
-</ion-header>
+<ion-header> </ion-header>
 
-<ion-content >		
-	<div class="ion-padding">
-		<div padding-horizontal text-center class="animated fadeInDown">
-      <div padding-horizontal text-center >
-        <img src="../../assets/imgs/logo_obser_ciu.png" alt="Observador ciudadano">
+<ion-content class="ion-padding">
+  <br /><br /><br />
+  <div class="formulario">
+    <div padding-horizontal text-center class="animated fadeInDown">
+      <div padding-horizontal text-center>
+        <img
+          class="imagen"
+          src="../../assets/imgs/logo.svg"
+          alt="Observador ciudadano"
+        />
       </div>
-      <div padding-horizontal text-center >
-        <img src="../../assets/imgs/text.png" alt="Observador ciudadano">
-      </div>
-		</div>
-	  
-		<!-- Login form -->
-    <form (ngSubmit)="login()"  #loginForm="ngForm">
+    </div>
 
-      <ion-row>  
-        <ion-col col-2></ion-col>
-          <ion-col col-8>
-              <ion-list inset>
-                  <ion-item>
-                    <ion-icon name="mail" item-start class="text-primary"></ion-icon>
-                    <ion-input type="text" placeholder="Correo del Usuario" name="usuario" [(ngModel)]="usuario.correo" required></ion-input>
-                  </ion-item>  
-                  <ion-item>
-                    <ion-icon name="lock" item-start class="text-primary"></ion-icon>
-                    <ion-input type="password" placeholder="Password" name="password" [(ngModel)]="usuario.pass" required></ion-input>
-                  </ion-item>    
-              </ion-list>
-          </ion-col>
+    <!-- Login form -->
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+      <ion-row class="ion-padding">
+        <ion-col class="input">
+          <!-- <ion-icon name="mail" item-start class="text-primary"></ion-icon> -->
+          <ion-input
+            class="fondoInput"
+            type="text"
+            placeholder="Usuario"
+            name="usuario"
+            [(ngModel)]="usuario.correo"
+            required
+          >
+          </ion-input>
+        </ion-col>
       </ion-row>
-      
+
+      <ion-row class="ion-padding">
+        <ion-col class="input">
+          <ion-input
+            class="fondoInput"
+            type="password"
+            placeholder="Contraseña"
+            name="password"
+            [(ngModel)]="usuario.pass"
+            required
+          ></ion-input>
+        </ion-col>
+      </ion-row>
+
       <ion-row>
         <ion-col col-2></ion-col>
-          <ion-col col-8 class="signup-col">
-            <button ion-button class="submit-btn loginButton" full type="submit" [disabled]="!loginForm.form.valid">Login</button>
-          </ion-col>
-      </ion-row>
-      
-    </form>
+        <ion-col size="8">
+          <ion-button
+            shape="round"
+            class="fndBoton"
+            type="submit"
+            [disabled]="!loginForm.form.valid"
+          >
+            &nbsp; Entrar &nbsp;</ion-button
+          >
+        </ion-col>
 
-    <div text-center margin-top>
-      <span ion-text color="secondary" tappable ><strong>Version 1.0</strong></span>
-    </div>
-  </div>  
+        <ion-col col-2></ion-col>
+      </ion-row>
+      <br />
+      <ion-row>
+        <ion-col class="ion-text-center">
+          <a href="" style="color: #2a4a7c;"> <b>Olvidé mi contraseña</b> </a>
+        </ion-col>
+      </ion-row>
+    </form>
+  </div>
 </ion-content>
+<ion-row style="position: fixed;bottom: 0;width: 100%;">
+  <ion-col size="4" push="4" text-center>
+    <p>
+      <b>
+        Versión 1.0
+      </b>
+    </p>
+  </ion-col>
+</ion-row>

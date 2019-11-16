@@ -1,87 +1,82 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Perfil Usuario</ion-title>
-    <ion-buttons slot="end">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>    
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-  <ion-row>
-    <ion-col col-8>
-      <div class="preview-img"><br/><br/> <img id="idImg" [src]="doc.foto" style="left:10%;width:80%;height:80%" /> <br/><br/></div>
+  <ion-row style="background-color:#96a3b2;height: 100%;">
+    <ion-col size="2" style="background-color: #2a4a7c;" text-center>
+      <div>
+        <img src="assets/imgs/logo1.png" alt="" />
+      </div>
     </ion-col>
-    <ion-col col-8>
-      <div id="mapauser" style="left:10%;width:80%;height:80%"></div>
+    <ion-col size="8" text-center>
+      <p style="color: white;"><b>Perfil </b></p>
+    </ion-col>
+
+    <ion-col size="2" style="background-color:#2a4a7c;">
+      <ion-menu-button class="menuHam"></ion-menu-button>
     </ion-col>
   </ion-row>
+</ion-header>
 
-    <form (ngSubmit)="register()" #registerForm="ngForm">
+<ion-content class="ion-padding">
+  <!-- código nuevo  -->
+  <br /><br />
+  <ion-card style="background-color: #cad0d8;" class="shadowCard">
+    <ion-grid>
       <ion-row>
-        <ion-col col-8>
-          <ion-list inset>
-            <ion-item>
-              <ion-label stacked>Usuario</ion-label>
-              <ion-input type="text" placeholder="Name" name="name" [(ngModel)]="doc.usuario" readonly></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label stacked>Correo</ion-label>
-              <ion-input type="text" placeholder="Email" name="email" [(ngModel)]="doc.correo" readonly></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label>Roles</ion-label>
-              <ion-input type="text" name="roles" [(ngModel)]="doc.roles" readonly></ion-input>
-            </ion-item>
-            <ion-item>
-              <ion-label>Estado</ion-label>
-              <ion-input type="text" name="estado" [(ngModel)]="delta.estado.nombre" readonly></ion-input>
-            </ion-item>                  
-            <ion-item>
-              <ion-label>Municipio</ion-label>
-              <ion-input type="text" name="municipio" [(ngModel)]="delta.municipio.nombre" readonly></ion-input>
-            </ion-item>   
-            <ion-item>
-              <ion-label>Colonia</ion-label>
-              <ion-input type="text" name="colonia" [(ngModel)]="delta.colonia.nombre" readonly></ion-input>
-            </ion-item> 
-            <ion-item>
-              <ion-label>Estatus</ion-label>
-              <ion-input type="text" name="estatus" [(ngModel)]="doc.estatus" readonly></ion-input>
-            </ion-item>
-          </ion-list>
+        <ion-col size="4" push="4" text-center>
+          <div>
+            <img [src]="doc.foto" class="imagenAvatar" />
+          </div>
         </ion-col>
       </ion-row>
-<!--
-      <ion-item>
-        <label color="primary" class="item item-input"></label>
-        <input type="file" class="custom-file-input" id="idfile" name="uploadfile" ng-model="form.uploadfile" (change)="setFile($event)"  style="color: transparent">
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Contraseña</ion-label>
-        <ion-input type="password" placeholder="Contraseña" name="pass" [(ngModel)]="doc.pass" required></ion-input>
-      </ion-item>
-      <ion-item>
-          <ion-label stacked>Confirme contraseña</ion-label>
-          <ion-input type="password" placeholder="Confirm Password" name="confirmation_password" [(ngModel)]="forma.confirmation_password" required></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Region</ion-label>
-        <ion-input type="region" placeholder="Región" name="region" value="{{doc.idRegion}}" required></ion-input>
-      </ion-item>
-    
-        <ion-row>
-          <ion-col class="usuario-col" *ngIf="!isUpdate">
-            <button ion-button class="submit-btn" full type="submit"  [disabled]="!registerForm.form.valid">Register</button>
-          </ion-col>
-          <ion-col class="usuario-col" *ngIf="isUpdate">
-            <button ion-button class="submit-btn" full type="button"  (click)="editar()" [disabled]="!registerForm.form.valid">Guardar</button>
-          </ion-col>
-          <ion-col class="usuario-col" *ngIf="isUpdate">
-            <button ion-button class="submit-btn" full type="button"  (click)="borrar()" [disabled]="!registerForm.form.valid">Borrar</button>
-          </ion-col>
-        </ion-row>
--->
-      </form>
-    
+
+      <ion-row>
+        <ion-col size="3" push="2">
+          <p class="celdasNegritas">Nombre:</p>
+        </ion-col>
+        <ion-col size="7" push="2">
+          <p class="celdasNegritas">
+            <b>{{ doc.usuario }}</b>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3" push="2">
+          <p class="celdasNegritas">Correo:</p>
+        </ion-col>
+        <ion-col size="7" push="2">
+          <p class="celdasNegritas">
+            <b>{{ doc.correo }}</b>
+          </p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="3" push="2">
+          <p class="celdasNegritas">Región:</p>
+        </ion-col>
+        <ion-col size="7" push="2">
+          <p class="celdasNegritas">
+            <b>{{ delta.estado.nombre }}</b>
+          </p>
+        </ion-col>
+      </ion-row>
+
+      <br />
+
+      <ion-row>
+        <ion-col size="8" push="2">
+          <ion-button
+            (click)="selectRow($event, delta.colonia)"
+            class="btnDetalle"
+            expand="full"
+            shape="round"
+          >
+            <ion-icon name="globe" mode="ios"> </ion-icon>&nbsp; Demarcación
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>
+
+  <ion-col>
+    <!-- <div id="mapauser" style="left:10%;width:80%;height:50%"></div> -->
+  </ion-col>
 </ion-content>

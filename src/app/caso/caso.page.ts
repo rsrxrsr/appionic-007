@@ -14,7 +14,7 @@ export class CasoPage implements OnInit {
   modelo={estado:{regiones:[]},municipio:{regiones:[]}};
   coleccion="caso";
   isUpdate=false; 
-  doc = {id:"",dateCreation: new Date().toISOString(),idCase:"",titulo:"",idClassification:"",riesgo:"",impacto:"",description:"",municipio:"",address:""};
+  doc = {id:"",dateCreation: new Date().toISOString(),idCase:"",titulo:"",idClassification:"",riesgo:"",impacto:"",description:"",municipio:"",address:"",estatus:"Activo"};
 
   observador:any;
   constructor(

@@ -122,15 +122,18 @@ export class FirebaseService {
   }
 
   public watchColeccion(coleccion: string, componente:any){
+    console.log("Watches: ", coleccion);
     return new Promise<any>((resolve, reject) => {
-      this.afs.collection(coleccion).snapshotChanges().subscribe(querySnapshot => {
+      this.afs.collection(coleccion, ref =>
+        ref.where("idObservador", "==", this["usuario"].id).where("estatus","==","Activo"))
+      .snapshotChanges().subscribe(querySnapshot => {
         var snapshot = [];
         querySnapshot. forEach(function(doc) {
           var item=doc.payload.doc.data();
           item['id']=doc.payload.doc.id;
           snapshot.push(item);
         });
-        console.log("Consulta: ", coleccion, snapshot );
+        console.log("Watches: ", coleccion, snapshot );
         this.modelo[coleccion]=snapshot;
         componente.watchColeccion();
         resolve(snapshot);
@@ -233,6 +236,26 @@ export class FirebaseService {
     });
   }
 
+  public findAcciones(coleccion: string, campo:string, operador, value){
+    return new Promise<any>((resolve, reject) => {
+      let region=this["usuario"].region;
+      this.afs.collection(coleccion, ref => ref.where(campo, operador, value))
+        .snapshotChanges().subscribe(querySnapshot => {
+          var snapshot = [];
+          querySnapshot. forEach(function(doc) {
+            let item=doc.payload.doc.data();
+            if (region.includes(item["region"])) {
+              item['id']=doc.payload.doc.id;
+              snapshot.push(item);  
+            }
+          });
+          console.log("Consulta: ", coleccion, snapshot );
+          this.modelo[coleccion]=snapshot;
+          resolve(snapshot);
+        })     
+    });
+  }
+
   public consultarColecciones(coleccion: string){
     return new Promise<any>((resolve, reject) => {
       this.afs.collectionGroup(coleccion).snapshotChanges().subscribe(querySnapshot => {
@@ -253,27 +276,35 @@ export class FirebaseService {
     console.log('Instancias');
     let f = new Date();
     let fecha=f.getFullYear() + "/" + (f.getMonth() +1) + "/" + f.getDate() ;
+    this.modelo["encuestaInstancia"]=[];
     return new Promise<any>((resolve, reject) => {
       this.consultarColeccion(coleccion).then( snap1 => {
+        console.log("snap1", snap1);
         snap1.forEach((element1, index1) => {
           let ref1:string = coleccion+"/"+element1.id+"/instancias";
           //, ref => ref.where("fhFin", ">", fecha)        
-          let max:any;
           this.afs.collection(ref1)
             .snapshotChanges().subscribe(snap2 => {
+              console.log("snap2", snap2);
+              let max:any;
               snap2.forEach(element2=>{
                 let doc=element2.payload.doc.data();
                 doc["id"]=element2.payload.doc.id;
+                console.log("MaxInstancia",region,doc["idRegion"],doc["fhFin"]);
                 if(region.includes(doc["idRegion"])) {
-                  //if (!max || max.fhFin<doc["fhFin"]) {
+                  if (!max || max.fhFin<doc["fhFin"]) {
                     max=doc;
-                  //}  
+                  }  
                 }
               })
-              console.log("max",max);
-              element1.instancia=max;
+              if (max) {
+                console.log("max",max);
+                element1.instancia=max;
+                this.modelo["encuestaInstancia"].push(element1);  
+              }
           });   
         });
+        console.log("resolve",snap1);
         resolve(snap1);
       });
     });

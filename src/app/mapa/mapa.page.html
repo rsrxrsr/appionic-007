@@ -1,17 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <ion-button slot="start" (click)="salir()"><ion-icon name="arrow-round-up"></ion-icon></ion-button>    
+    <ion-button
+      slot="start"
+      (click)="salir()"
+      fill="clear"
+      style="color: white;"
+      ><ion-icon name="arrow-back" mode="ios"></ion-icon
+    ></ion-button>
     <ion-title>Ubicación</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
-  <div #map id="map" style="left:7%;height:85%;width:85%"></div>
+<ion-content class="ion-padding">
+  <div #map id="map" style="left:15%;height:70%;width:70%"></div>
   <h6>Ubicación</h6>
-  <ion-item>
-    <ion-label stacked>Ubicación del caso</ion-label>
-    <ion-textarea placeholder="Ubicación del caso" name="descripcion" [(ngModel)]="item.address" readonly color="ligth"></ion-textarea>
+  <ion-item class="input">
+    <!-- <ion-label stacked>Ubicación del caso</ion-label> -->
+    <ion-textarea
+      placeholder="Ubicación del caso"
+      name="descripcion"
+      [(ngModel)]="item.address"
+      readonly
+    ></ion-textarea>
   </ion-item>
-
 </ion-content>
