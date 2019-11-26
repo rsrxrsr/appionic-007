@@ -12,6 +12,7 @@ import { FirebaseService } from "./services/firebase.service";
 //import { IonicStorageModule } from '@ionic/storage';
 //import { Firebase } from '@ionic-native/firebase/ngx';
 
+import { HttpClientModule } from '@angular/common/http';
 import { FCM } from "@ionic-native/fcm/ngx";
 import { Geolocation } from "@ionic-native/geolocation/ngx";
 import { NativeGeocoder } from "@ionic-native/native-geocoder/ngx";
@@ -36,7 +37,8 @@ import { AppRoutingModule } from "./app-routing.module";
     AngularFireModule.initializeApp(CONEXION_BD.firebase),
     AngularFirestoreModule,
     AngularFireStorageModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    HttpClientModule
   ],
   providers: [
     StatusBar,

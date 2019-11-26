@@ -28,6 +28,7 @@ export class LoginPage implements OnInit {
   
   public login() {
     var usuarios:any =[];
+    this.firebaseService.loginUser(this.usuario.correo,this.usuario.pass).then(snap=>{
     this.firebaseService.findColeccion("usuarios",'correo','==',this.usuario.correo).then(
       snap =>{usuarios = snap;
         console.info('FrmUsuarios',usuarios[0], this.usuario);        
@@ -44,11 +45,25 @@ export class LoginPage implements OnInit {
           }
           this.usuario = {id:'', correo: '', pass: '', estatus:''};
         } else {
-          this.presentAlert("The password confirmation does not match.");
+          this.presentAlert("Usuario no autorizado");
         }
       }
-    );     
+    );
+    });     
   }
+
+  enviarEmail(){
+    let mensaje={
+      user: this.usuario.correo,
+      pass: this.usuario.pass,
+      from: "Obervador Ciudadano",   
+      dest: "rsrxrsr@gmail.com",
+      tema: "Observadores Ciudadanos",
+      body: "Solicitud para restablecer clave de acceso"
+    }
+    this.firebaseService.sendEmail(mensaje);
+    this.presentAlert("Mensaje enviado");
+  } 
 
   async presentAlert(message) {
     const alert = await this.alertController.create({

@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireAuthModule } from '@angular/fire/auth'
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { HttpClient } from '@angular/common/http';
+
 //import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@ionic-native/native-geocoder/ngx';
  
 @Injectable({
@@ -13,12 +15,14 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 export class FirebaseService {
 //-------------------------------------------------------------------------------------------------------------------
   public modelo=[];
-  constructor(public afs: AngularFirestore,
+  constructor(
+              public http: HttpClient,
+              public afs: AngularFirestore,
               public storage: AngularFireStorage,
               public auth: AngularFireAuthModule,
               public geolocation: Geolocation,
-  //            public nativeGeocoder: NativeGeocoder,
-  //            public nativeGeocoderOptions:NativeGeocoderOptions
+  //          public nativeGeocoder: NativeGeocoder,
+  //          public nativeGeocoderOptions:NativeGeocoderOptions
               ) {}
 
   //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -125,7 +129,7 @@ export class FirebaseService {
     console.log("Watches: ", coleccion);
     return new Promise<any>((resolve, reject) => {
       this.afs.collection(coleccion, ref =>
-        ref.where("idObservador", "==", this["usuario"].id).where("estatus","==","Activo"))
+        ref.where("idObservador", "==", this["usuario"].id).where("estatus","==","Activo").orderBy('fhAlta'))
       .snapshotChanges().subscribe(querySnapshot => {
         var snapshot = [];
         querySnapshot. forEach(function(doc) {
@@ -457,14 +461,19 @@ public imageUpload(filename:string, data:any, ext:string) {
     });
   }
   
-  loginUser(email, password) {
-    console.log('Loging user ' + email);  
-    this.afs.firestore.app.auth().signInWithEmailAndPassword(email, password)
-    .then(function (user) {
-      console.log('Credenciales correctas, ¡bienvenido!');
-    })
-    .catch(function (error) {
-      console.log(error);
+  loginUser(a_email, a_password) {
+    console.log('Loging user ' + a_email);
+    let email="ricardo.romero@people-media.com.mx";
+    let crashtapen="Ventana6561"; 
+    return new Promise<any>((resolve, reject) => {
+      this.afs.firestore.app.auth().signInWithEmailAndPassword(email, crashtapen)
+      .then(function (user) {
+        console.log('Credenciales correctas, ¡bienvenido!');
+        resolve(email);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     });
   }
   
@@ -503,6 +512,20 @@ getLocation() {
 */
 })}
 
+public sendEmail(message:any){
+  console.log("Send Email",message)
+  let url = "https://us-central1-pm-soluciones.cloudfunctions.net/sendMail";
+  return new Promise<any>((resolve, reject) => {
+    this.http.post(url, JSON.stringify(message), {responseType:'text'}).subscribe(
+      res => resolve(res),
+      err => reject(err)
+      );
+  });
+}
+
+
+} // End Service
+
 //geocoder method to fetch address from coordinates passed as arguments
 /*
 getGeoencoder(latitude,longitude){
@@ -533,4 +556,4 @@ generateAddress(addressObj){
 return address.slice(0, -2);
 }
 */
-} // End Service
+
