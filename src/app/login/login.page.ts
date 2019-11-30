@@ -57,9 +57,9 @@ export class LoginPage implements OnInit {
       user: this.usuario.correo,
       pass: this.usuario.pass,
       from: "Obervador Ciudadano",   
-      dest: "rsrxrsr@gmail.com",
-      tema: "Observadores Ciudadanos",
-      body: "Solicitud para restablecer clave de acceso"
+      dest: "ricardo.romero@people-media.com.mx",
+      tema: "Restablecer acceso",
+      body: "Solicitud de clave de acceso"
     }
     this.firebaseService.sendEmail(mensaje);
     this.presentAlert("Mensaje enviado");
@@ -68,7 +68,7 @@ export class LoginPage implements OnInit {
   async presentAlert(message) {
     const alert = await this.alertController.create({
       header: 'Alert',
-      subHeader: 'Secure',
+      subHeader: 'Email',
       "message": message,
       buttons: ['OK']
     });
