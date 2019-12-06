@@ -137,6 +137,7 @@
                   "
                 >
                   <ion-item>
+                    <ion-label>{{ itemOp.cvOpcion }}</ion-label>
                     <ion-label>{{ itemOp.opcion }}</ion-label>
                     <ion-radio [value]="itemOp.valor"></ion-radio>
                   </ion-item>
@@ -153,7 +154,8 @@
                   let idy = index
                 "
               >
-                <ion-label>{{ itemOp.opcion }}</ion-label>
+              <ion-label>{{ itemOp.cvOpcion }}</ion-label>
+              <ion-label>{{ itemOp.opcion }}</ion-label>
                 <ion-checkbox
                   slot="end"
                   [(ngModel)]="itemOp.isChecked"

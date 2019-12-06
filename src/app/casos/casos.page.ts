@@ -19,6 +19,7 @@ export class CasosPage implements OnInit {
     private router: Router,
     public firebaseService: FirebaseService
   ) {
+    console.log("Casos");
     if (!this.firebaseService["usuario"]) {
       this.router.navigate(["/login"]);
       return;

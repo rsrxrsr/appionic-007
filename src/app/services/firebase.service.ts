@@ -126,10 +126,10 @@ export class FirebaseService {
   }
 
   public watchColeccion(coleccion: string, componente:any){
-    console.log("Watches: ", coleccion);
+    console.log("Watches: ", this["usuario"].id, coleccion);
     return new Promise<any>((resolve, reject) => {
       this.afs.collection(coleccion, ref =>
-        ref.where("idObservador", "==", this["usuario"].id).where("estatus","==","Activo").orderBy('fhAlta'))
+        ref.where("idObservador", "==", this["usuario"].id).where("estatus","==","Activo").orderBy('dateCreation'))
       .snapshotChanges().subscribe(querySnapshot => {
         var snapshot = [];
         querySnapshot. forEach(function(doc) {
@@ -282,7 +282,7 @@ export class FirebaseService {
     let fecha=f.getFullYear() + "/" + (f.getMonth() +1) + "/" + f.getDate() ;
     this.modelo["encuestaInstancia"]=[];
     return new Promise<any>((resolve, reject) => {
-      this.consultarColeccion(coleccion).then( snap1 => {
+      this.findColeccion(coleccion,"estatus","==","Activo").then( snap1 => {
         console.log("snap1", snap1);
         snap1.forEach((element1, index1) => {
           let ref1:string = coleccion+"/"+element1.id+"/instancias";
