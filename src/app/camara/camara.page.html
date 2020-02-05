@@ -31,13 +31,14 @@
 </ion-header>
 
 <ion-content>
+<!--
   <ion-grid>
     <ion-row>
       <ion-col size="6" push="2">
         <p *ngIf="foto">Foto</p>
         <img src="{{ foto }}" *ngIf="foto" class="recursosTomados" />
 
-        <p *ngIf="video">Video</p>
+        <p *ngIf="false">Video</p>
         <video
           *ngIf="video"
           controls="controls"
@@ -57,7 +58,7 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-
+  -->
   <!-- -->
   <div *ngIf="evidencias.length == 0">
     <ion-item>No hay evidencias.</ion-item>
@@ -115,18 +116,25 @@
                         <b>No.{{doc.idCase}}</b>
                       </p>
                     </ion-col>
-
                     <ion-col size="6" push="2" class="ion-no-padding">
                       <p style="color:white;font-size: small;">
                         <b>{{doc.description}}</b>
                       </p>
                     </ion-col>
                   </ion-row>
+                  <ion-row class="ion-no-padding">
+                    <ion-item style="color:silver;">
+                      <ion-checkbox color="primary" [(ngModel)]="item.delete"></ion-checkbox>
+                      <ion-label>Eliminar</ion-label>
+                    </ion-item>
+                  </ion-row>
                 </div>
               </div>
 
               <!-- video en pequeño -->
-              <div *ngIf="item.tipo=='video'">
+              <div *ngIf="item.tipo=='video'"
+                style="background-color:#2a4a7c;border-radius: 20px;"
+              >
                 <div>
                   <video
                     controls="controls"
@@ -140,20 +148,25 @@
                       type="video/mp4"
                       style="border-top-left-radius:20px;"
                     />
-                    <ion-row class="ion-no-padding">
+                  </video>
+                  <ion-row class="ion-no-padding">
                       <ion-col size="3" push="1" class="ion-no-padding">
                         <p style="color:white;font-size: small;">
                           <b>No.{{doc.idCase}}</b>
                         </p>
                       </ion-col>
-
                       <ion-col size="6" push="2" class="ion-no-padding">
                         <p style="color:white;font-size: small;">
                           <b>{{doc.description}}</b>
                         </p>
                       </ion-col>
+                      <ion-row class="ion-no-padding">
+                        <ion-item style="color:silver;">
+                          <ion-checkbox color="primary" [(ngModel)]="item.delete"></ion-checkbox>
+                          <ion-label>Eliminar</ion-label>
+                        </ion-item>
+                      </ion-row>
                     </ion-row>
-                  </video>
                 </div>
               </div>
             </div>
@@ -181,7 +194,6 @@
                         <b>No.{{doc.idCase}}</b>
                       </p>
                     </ion-col>
-
                     <ion-col
                       size="6"
                       push="2"
@@ -192,11 +204,19 @@
                       </p>
                     </ion-col>
                   </ion-row>
+                  <ion-row class="ion-no-padding">
+                    <ion-item style="color:silver;">
+                      <ion-checkbox color="primary" [(ngModel)]="item.delete"></ion-checkbox>
+                      <ion-label>Eliminar</ion-label>
+                    </ion-item>
+                  </ion-row>
                 </div>
               </div>
 
               <!-- video en grande -->
-              <div *ngIf="item.tipo=='video'">
+              <div *ngIf="item.tipo=='video'"
+              style="background-color:#2a4a7c;border-radius: 20px;"
+              >
                 <div>
                   <video
                     controls="controls"
@@ -210,6 +230,7 @@
                       type="video/mp4"
                       style="border-radius: 20px;"
                     />
+                  </video>
                     <ion-row class="ion-no-padding">
                       <ion-col
                         size="3"
@@ -231,8 +252,13 @@
                         </p>
                       </ion-col>
                     </ion-row>
-                  </video>
-                </div>
+                    <ion-row class="ion-no-padding">
+                      <ion-item style="color:silver;">
+                        <ion-checkbox color="primary" [(ngModel)]="item.delete"></ion-checkbox>
+                        <ion-label>Eliminar</ion-label>
+                      </ion-item>
+                    </ion-row>
+                  </div>
               </div>
             </div>
           </ion-col>

@@ -74,6 +74,7 @@ export class CasoPage implements OnInit {
       .then(snap=>{
         let ref=this.coleccion+"/"+this.doc.id+"/evidencias";
         let deletes=0;
+        let n=this.firebaseService.modelo["evidencias"].length-1;
         this.firebaseService.modelo["evidencias"].forEach((element, index) => {
           if (element.delete) {
             this.firebaseService.deleteDocument(ref, element.id);
@@ -82,8 +83,12 @@ export class CasoPage implements OnInit {
             let id= "sq-"+(index-deletes);
             this.firebaseService.upsertDocument(ref, id, element);
             //.then(success=>alert("success"),err=>alert(err));
+            if (index==n && deletes>0) {
+              this.firebaseService.deleteDocument(ref, element.id);
+            }
           }  
         });
+        this.firebaseService.modelo["evidencias"]=[];
     });
     this.presentAlert("Caso actualizado"); alert
   }
@@ -104,8 +109,8 @@ export class CasoPage implements OnInit {
   
   async presentAlert(message) {
     const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: 'Subtitle',
+      header: 'Casos',
+      subHeader: 'Documento',
       "message": message,
       buttons: ['OK']
     });

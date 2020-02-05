@@ -51,7 +51,7 @@ export class CamaraPage implements OnInit {
   }
 
   selectRow(event, item) {
-    alert(item.tipo);
+    //alert(item.tipo);
     if (item.tipo == "imagen") {
       this.foto = item.urlPhoto;
     } else if (item.tipo == "video") {

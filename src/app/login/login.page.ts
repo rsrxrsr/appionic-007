@@ -19,13 +19,15 @@ export class LoginPage implements OnInit {
   constructor(
     private router: Router,
     private alertController:AlertController,
-    private firebaseService:FirebaseService) { }
+    private firebaseService:FirebaseService,
+    public menuCtrl: MenuController) { }
 
   ngOnInit() {
     console.log('OnInit');
+    this.menuCtrl.enable(false);
     this.firebaseService.logoutUser();
   }
-  
+
   public login() {
     var usuarios:any =[];
     this.firebaseService.loginUser(this.usuario.correo,this.usuario.pass).then(snap=>{
@@ -44,6 +46,7 @@ export class LoginPage implements OnInit {
             this.router.navigate(['/casos']);
           }
           this.usuario = {id:'', correo: '', pass: '', estatus:''};
+          this.menuCtrl.enable(true);
         } else {
           this.presentAlert("Usuario no autorizado");
         }
@@ -53,16 +56,21 @@ export class LoginPage implements OnInit {
   }
 
   enviarEmail(){
-    let mensaje={
-      user: this.usuario.correo,
-      pass: this.usuario.pass,
-      from: "Obervador Ciudadano",   
-      dest: "ricardo.romero@people-media.com.mx",
-      tema: "Restablecer acceso",
-      body: "Solicitud de clave de acceso"
+    if (this.usuario.correo) {
+      let mensaje={
+        user: this.usuario.correo,
+        pass: this.usuario.pass,
+        from: "Obervador Ciudadano",   
+        dest: "ricardo.romero@people-media.com.mx",
+        tema: "Restablecer acceso",
+        body: "Solicitud de clave de acceso"
+      }
+      this.firebaseService.sendEmail(mensaje);
+      this.presentAlert("El administrador le contactará, gracias!");
+    } else {
+      this.presentAlert("Favor de proporcionar su correo");
     }
-    this.firebaseService.sendEmail(mensaje);
-    this.presentAlert("Mensaje enviado");
+
   } 
 
   async presentAlert(message) {

@@ -15,7 +15,8 @@ export class AccionPage implements OnInit {
   isUpdate=false; 
   createSuccess = false;
   doc = {id:"",tipo:"",idCaso:"",accion:"",descripcion:"",fhAlta:"",fhFinPlan:"",responsable:"",informe:"",avance:"",fhFin:"",estatus:"",idEncuesta:""};
-  delta:any; 
+  delta:any;
+  //fecha: String = new Date().toISOString();
 
   constructor(
 
@@ -38,22 +39,26 @@ export class AccionPage implements OnInit {
 
   public actualizar() {
     this.firebaseService.updateDocument(this.coleccion, this.doc.id, this.doc );
-    this.presentAlert("Caso actualizado"); 
+    this.presentAlert("Acción actualizado"); 
   }
 
   public borrar() {
     this.firebaseService.deleteDocument(this.coleccion, this.doc.id );  
-    this.presentAlert("Caso borrado"); 
+    this.presentAlert("Acción borrado"); 
   }
 
   async presentAlert(message) {
     const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: 'Subtitle',
+      header: 'Actividades',
+      subHeader: 'Asignación',
       "message": message,
       buttons: ['OK']
     });
     await alert.present();
+  }
+
+  public valrang() {
+    return Number(this.doc.avance) < 0 || Number(this.doc.avance)>100;
   }
 
 }

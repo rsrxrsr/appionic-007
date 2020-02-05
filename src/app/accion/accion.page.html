@@ -137,6 +137,7 @@
             placeholder="Informe"
             name="Informe"
             [(ngModel)]="doc.informe"
+            required
           ></ion-input>
         </ion-col>
       </ion-row>
@@ -149,8 +150,10 @@
           <ion-input
             class="fondoInput"
             type="number"
-            [min]="0.0"
-            [max]="100.0"
+            inputmode="decimal"
+            min="0.00"
+            max="100.00"
+            step=".10"
             placeholder="% Avance"
             name="Avance"
             [(ngModel)]="doc.avance"
@@ -161,17 +164,20 @@
 
       <ion-row>
         <ion-col size="12">
-          <ion-label stacked>Fecha fin real:</ion-label>
+          <ion-label stacked>Fecha fin:</ion-label>
         </ion-col>
         <ion-col class="input" size="12">
-          <ion-input
+           <ion-datetime
             class="fondoInput"
             type="date"
             placeholder="fecha fin"
             name="fhFin"
             [(ngModel)]="doc.fhFin"
+            displayFormat="DD/MM/YYYY"
+            min="{{doc.fhAlta}}"
+            max="2020"
           >
-          </ion-input>
+          </ion-datetime>
         </ion-col>
       </ion-row>
       <br />
@@ -182,24 +188,24 @@
             <ion-select name="Estatus" [(ngModel)]="doc.estatus">
               <ion-select-option>Activo</ion-select-option>
               <ion-select-option>Terminado</ion-select-option>
-              <ion-select-option>Cancelado</ion-select-option>
+              <!--<ion-select-option>Cancelado</ion-select-option>-->
             </ion-select>
           </ion-item>
         </ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-col *ngIf="!isUpdate" size="12">
+        <ion-col *ngIf="!isUpdate && doc.idCaso" size="12">
           <ion-button
             class="btnDetalle"
             expand="full"
             shape="round"
             type="submit"
-            [disabled]="!registerForm.form.valid"
+            [disabled]="!registerForm.form.valid || valrang()"
             >Registrar
           </ion-button>
         </ion-col>
-        <ion-col *ngIf="isUpdate" size="12">
+        <ion-col *ngIf="isUpdate && doc.idCaso" size="12">
           <ion-button
             class="btnDetalle"
             expand="full"
@@ -221,7 +227,7 @@
             (click)="borrar()"
             >Borrar</ion-button
           >
-        </ion-col>
+      </ion-col>
       </ion-row>
     </form>
   </ion-grid>

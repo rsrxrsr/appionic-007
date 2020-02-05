@@ -106,21 +106,24 @@ export class CuestionarioPage implements OnInit {
             break;
         }
       }
-      this.presentAlert("Cuestionario registrado");        
+      this.presentAlert("Cuestionario registrado");
     })
   }
 
   public register(ref,doc) {
-    {
-      console.log("Insert",ref);
-      this.firebaseService.addDocument(ref, doc ) 
-      .then(res => {
-        console.log("idInsert;", res.id);
-        doc.id=res.id;        
-      }).catch(err =>
-        this.presentAlert ("Error al registrar documento")
-      );
-      }
+    console.log("Insert",ref);
+    this.firebaseService.addDocument(ref, doc ) 
+    .then(res => {
+      console.log("idInsert;", res.id);
+      doc.id=res.id;
+      /*
+      for (let item in this.doc.preguntas) {
+        item["respuesta"]="";
+      } 
+      */                 
+    }).catch(err =>
+      this.presentAlert ("Error al registrar documento")
+    );
   }
 
   async presentAlert(message) {

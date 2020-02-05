@@ -43,6 +43,7 @@
             type="text"
             name="idCase"
             [(ngModel)]="doc.idCase"
+            readonly
           ></ion-input>
         </ion-col>
       </ion-row>
@@ -72,6 +73,7 @@
             type="text"
             name="titulo"
             [(ngModel)]="doc.titulo"
+            required
           ></ion-input>
         </ion-col>
       </ion-row>
@@ -80,7 +82,7 @@
         <ion-col size="12">
           <ion-item color="light">
             <ion-label stacked>Clasificación</ion-label>
-            <ion-select name="clasificacion" [(ngModel)]="doc.idClassification">
+            <ion-select name="clasificacion" [(ngModel)]="doc.idClassification" required>
               <ion-select-option
                 *ngFor="let opcion of firebaseService.modelo['clases']"
                 [value]="opcion.clase"
@@ -94,7 +96,7 @@
         <ion-col size="12">
           <ion-item color="light">
             <ion-label stacked>Riesgo</ion-label>
-            <ion-select name="riesgo" [(ngModel)]="doc.riesgo">
+            <ion-select name="riesgo" [(ngModel)]="doc.riesgo" required>
               <ion-select-option>Alto</ion-select-option>
               <ion-select-option>Medio</ion-select-option>
               <ion-select-option>Bajo</ion-select-option>
@@ -106,7 +108,7 @@
         <ion-col size="12">
           <ion-item color="light">
             <ion-label stacked>Impacto</ion-label>
-            <ion-select name="impacto" [(ngModel)]="doc.impacto">
+            <ion-select name="impacto" [(ngModel)]="doc.impacto" required>
               <ion-select-option>Alto</ion-select-option>
               <ion-select-option>Medio</ion-select-option>
               <ion-select-option>Bajo</ion-select-option>
@@ -123,6 +125,7 @@
             class="fondoInput"
             name="descripcion"
             [(ngModel)]="doc.description"
+            required
           ></ion-textarea>
         </ion-col>
       </ion-row>
@@ -131,7 +134,7 @@
         <ion-col size="12">
           <ion-item color="light">
             <ion-label>Estado</ion-label>
-            <ion-select [(ngModel)]="modelo.estado" name="estado">
+            <ion-select [(ngModel)]="modelo.estado" name="estado" required>
               <ion-select-option
                 *ngFor="let opcion of firebaseService.modelo['regiones']"
                 [value]="opcion"
@@ -149,6 +152,7 @@
               [(ngModel)]="modelo.municipio"
               name="municipio"
               (ionChange)="setIdRegion('regiones')"
+              required
             >
               <ion-select-option
                 *ngFor="let opcion of modelo.estado['regiones']"
@@ -168,6 +172,8 @@
             class="fondoInput"
             name="direccion"
             [(ngModel)]="doc.address"
+            readonly
+            required
           ></ion-textarea>
         </ion-col>
       </ion-row>

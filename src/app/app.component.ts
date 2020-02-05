@@ -98,5 +98,8 @@ export class AppComponent {
     });
     toast.present();
   }
+
+  public logout() {
+    navigator['app'].exitApp();   }
   
 }
