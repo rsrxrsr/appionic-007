@@ -14,37 +14,43 @@ export class AccionPage implements OnInit {
   coleccion="acciones";
   isUpdate=false; 
   createSuccess = false;
-  doc = {id:"",tipo:"",idCaso:"",accion:"",descripcion:"",fhAlta:"",fhFinPlan:"",responsable:"",informe:"",avance:"",fhFin:"",estatus:"",idEncuesta:""};
-  delta:any;
   //fecha: String = new Date().toISOString();
+  //fh = new Date().toISOString().slice(0,10); 
+  fecha: Date = new Date();
+  fh = this.fecha.toLocaleDateString();
+  doc = {id:"",tipo:"",idCaso:"",accion:"",descripcion:"",fhAlta:"",fhFinPlan:"",responsable:"",informe:"",avance:"",fhFin:this.fecha,estatus:"",idEncuesta:""};
+  delta:any;
+  informe:String="";
 
   constructor(
 
     private alertController:AlertController,
     private activatedRoute :ActivatedRoute, 
     public firebaseService:FirebaseService,
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
-    console.log('ngOnInit');
+    console.log('ngOnInit', this.fecha);
     this.doc = JSON.parse(this.activatedRoute.snapshot.params["item"]);
+    this.doc.fhFin=this.fecha;
     this.firebaseService.getColeccion("encuestas");
   }
 
   public registrar() {
+    this.doc.informe = this.doc.informe ? this.doc.informe : "";
+    this.doc.informe+="\r"+this.fh+" "+this.firebaseService["usuario"].usuario+": "+this.informe;
     this.firebaseService.updateDocument(this.coleccion, this.doc.id, this.doc );
-    this.presentAlert("Documento actualizado");          
+    this.presentAlert("Documento registrado");          
   }
 
   public actualizar() {
     this.firebaseService.updateDocument(this.coleccion, this.doc.id, this.doc );
-    this.presentAlert("Acción actualizado"); 
+    this.presentAlert("Documento actualizado"); 
   }
 
   public borrar() {
     this.firebaseService.deleteDocument(this.coleccion, this.doc.id );  
-    this.presentAlert("Acción borrado"); 
+    this.presentAlert("Documento borrado"); 
   }
 
   async presentAlert(message) {
@@ -58,7 +64,7 @@ export class AccionPage implements OnInit {
   }
 
   public valrang() {
-    return Number(this.doc.avance) < 0 || Number(this.doc.avance)>100;
+    return (this.doc.idCaso) ? Number(this.doc.avance) < 0 || Number(this.doc.avance)>100 : false ; 
   }
 
 }

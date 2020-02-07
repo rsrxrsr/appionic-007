@@ -134,6 +134,7 @@ export class CuestionarioPage implements OnInit {
       buttons: ['OK']
     });
     await alert.present();
+    this.consultarEncuesta(); 
   }
 
 }

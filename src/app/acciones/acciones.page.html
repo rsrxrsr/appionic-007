@@ -51,7 +51,7 @@
             <b>Fecha alta:</b>
           </ion-col>
           <ion-col size="7" class="celdasNegritas">
-            {{ item.fhAlta | date: "dd-MM-yy HH:mm:ss" }}
+            {{ item.fhAlta | date: "dd-MM-yy" }}
           </ion-col>
         </ion-row>
 
@@ -60,7 +60,7 @@
             <b>Fecha fin:</b>
           </ion-col>
           <ion-col size="7" class="celdasNegritas">
-            {{ item.fhFinPlan }}
+            {{ item.fhFinPlan | date: "dd-MM-yy" }}
           </ion-col>
         </ion-row>
 

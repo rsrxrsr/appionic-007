@@ -50,7 +50,9 @@ export class CasoPage implements OnInit {
       })
     }
     this.firebaseService.consultarColeccion("clases");
-    this.getRegiones("regiones");
+    //this.getRegiones("regiones")
+    this.doc["idRegion"]="regiones/mYB9TZez4ys9WGHJbHJy/regiones/LsyugJFENlqSo8ZQc2iq"
+    this.doc.municipio="CdMx/Miguel Hidalgo"
     console.log("init doc", this.doc);
   }
 /*
@@ -90,7 +92,7 @@ export class CasoPage implements OnInit {
         });
         this.firebaseService.modelo["evidencias"]=[];
     });
-    this.presentAlert("Caso actualizado"); alert
+    this.presentAlert("Caso actualizado");
   }
 
   public borrar() {

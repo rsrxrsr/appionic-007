@@ -59,6 +59,19 @@
     </ion-row>
   </ion-grid>
   -->
+  <ion-row>
+    <ion-col size="12">
+      <ion-button
+        type="button"
+        (click)="actualizar()"
+        [disabled]="!doc || !doc.id || firebaseService.modelo['evidencias'].length<1"
+        class="boton"
+        shape="round"
+        expand="full"
+        >Actualizar
+      </ion-button>
+    </ion-col>
+  </ion-row> 
   <!-- -->
   <div *ngIf="evidencias.length == 0">
     <ion-item>No hay evidencias.</ion-item>
@@ -118,16 +131,18 @@
                     </ion-col>
                     <ion-col size="6" push="2" class="ion-no-padding">
                       <p style="color:white;font-size: small;">
-                        <b>{{doc.description}}</b>
+                        <b>{{item.id}}</b>
                       </p>
                     </ion-col>
                   </ion-row>
+                  <!--
                   <ion-row class="ion-no-padding">
                     <ion-item style="color:silver;">
                       <ion-checkbox color="primary" [(ngModel)]="item.delete"></ion-checkbox>
                       <ion-label>Eliminar</ion-label>
                     </ion-item>
                   </ion-row>
+                  -->
                 </div>
               </div>
 
@@ -157,16 +172,18 @@
                       </ion-col>
                       <ion-col size="6" push="2" class="ion-no-padding">
                         <p style="color:white;font-size: small;">
-                          <b>{{doc.description}}</b>
+                          <b>{{item.id}}</b>
                         </p>
                       </ion-col>
+                  </ion-row>
+                    <!--
                       <ion-row class="ion-no-padding">
                         <ion-item style="color:silver;">
                           <ion-checkbox color="primary" [(ngModel)]="item.delete"></ion-checkbox>
                           <ion-label>Eliminar</ion-label>
                         </ion-item>
                       </ion-row>
-                    </ion-row>
+                      -->
                 </div>
               </div>
             </div>
@@ -200,16 +217,18 @@
                       class="ion-text-center ion-no-padding"
                     >
                       <p style="color:white;">
-                        <b>{{doc.description}}</b>
+                        <b>{{item.id}}</b>
                       </p>
                     </ion-col>
                   </ion-row>
+                  <!--
                   <ion-row class="ion-no-padding">
                     <ion-item style="color:silver;">
                       <ion-checkbox color="primary" [(ngModel)]="item.delete"></ion-checkbox>
                       <ion-label>Eliminar</ion-label>
                     </ion-item>
                   </ion-row>
+                  -->
                 </div>
               </div>
 
@@ -248,16 +267,18 @@
                         class="ion-text-center ion-no-padding"
                       >
                         <p style="color:white;">
-                          <b>{{doc.description}}</b>
+                          <b>{{item.id}}</b>
                         </p>
                       </ion-col>
                     </ion-row>
+                    <!--
                     <ion-row class="ion-no-padding">
                       <ion-item style="color:silver;">
                         <ion-checkbox color="primary" [(ngModel)]="item.delete"></ion-checkbox>
                         <ion-label>Eliminar</ion-label>
                       </ion-item>
                     </ion-row>
+                    -->
                   </div>
               </div>
             </div>

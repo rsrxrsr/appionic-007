@@ -75,8 +75,8 @@ export class LoginPage implements OnInit {
 
   async presentAlert(message) {
     const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: 'Email',
+      header: 'Seguridad',
+      subHeader: 'Alerta',
       "message": message,
       buttons: ['OK']
     });

@@ -8,6 +8,7 @@ import {
   CaptureVideoOptions
 } from "@ionic-native/media-capture/ngx";
 import { File } from "@ionic-native/file/ngx";
+import { AlertController } from '@ionic/angular';
 
 //import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -33,8 +34,9 @@ export class CamaraPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private camera: Camera,
     private mediaCapture: MediaCapture,
-    private firebaseService: FirebaseService,
-    private file: File
+    public firebaseService: FirebaseService,
+    private file: File,
+    private alertController:AlertController,
   ) {
     this.doc = this.firebaseService.modelo["casoEntity"];
     this.evidencias = this.firebaseService.modelo["evidencias"];
@@ -137,6 +139,41 @@ export class CamaraPage implements OnInit {
         break;
     }
   }
+
+  public actualizar() {
+    this.firebaseService.upsertDocument("caso", this.doc.id, this.doc )
+      .then(snap=>{
+        let ref="caso/"+this.doc.id+"/evidencias";
+        let deletes=0;
+        let n=this.firebaseService.modelo["evidencias"].length-1;
+        this.firebaseService.modelo["evidencias"].forEach((element, index) => {
+          if (element.delete) {
+            this.firebaseService.deleteDocument(ref, element.id);
+            deletes++;
+          } else {
+            let id= "sq-"+(index-deletes);
+            this.firebaseService.upsertDocument(ref, id, element);
+            //.then(success=>alert("success"),err=>alert(err));
+            if (index==n && deletes>0) {
+              this.firebaseService.deleteDocument(ref, element.id);
+            }
+          }  
+        });
+        this.firebaseService.modelo["evidencias"]=[];
+    });
+    this.presentAlert("Caso actualizado");
+  }
+
+  async presentAlert(message) {
+    const alert = await this.alertController.create({
+      header: 'Casos',
+      subHeader: 'Documento',
+      "message": message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
 }
 
 /*
