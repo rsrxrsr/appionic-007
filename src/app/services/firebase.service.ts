@@ -242,13 +242,16 @@ export class FirebaseService {
 
   public findAcciones(coleccion: string, campo:string, operador, value){
     return new Promise<any>((resolve, reject) => {
+      let idObservador=this["usuario"].id;
       let region=this["usuario"].region;
+      console.log(idObservador,region)
       this.afs.collection(coleccion, ref => ref.where(campo, operador, value))
         .snapshotChanges().subscribe(querySnapshot => {
           var snapshot = [];
           querySnapshot. forEach(function(doc) {
             let item=doc.payload.doc.data();
-            if (region.includes(item["region"])) {
+            if (     item["idObservador"] == idObservador
+               || ( !item["idObservador"] && region.includes(item["region"]) ) ) {
               item['id']=doc.payload.doc.id;
               snapshot.push(item);  
             }

@@ -26,6 +26,7 @@
 </ion-header>
 
 <ion-content padding>
+  <!-- <ion-searchbar> -->
   <div *ngIf="this.firebaseService.modelo[coleccion] == 0">
     <ion-item>No hay información</ion-item>
   </div>
@@ -34,12 +35,10 @@
     [(ngModel)]="searchData"
     (ionInput)="setFilter(searchData, firebaseService.modelo[coleccion])"
   ></ion-searchbar>
-
-  <!-- <ion-searchbar></ion-searchbar> -->
-
   <div *ngIf="swFind" class="spinner-container">
     <ion-spinner></ion-spinner>
   </div>
+  <!-- </ion-searchbar> -->
   <ion-grid>
     <ion-row no-padding style="background-color: #96a3b2;color: white;">
       <ion-col size="2" texte-center>

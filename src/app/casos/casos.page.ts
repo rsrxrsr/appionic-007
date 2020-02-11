@@ -40,19 +40,19 @@ export class CasosPage implements OnInit {
     this.router.navigate(["/tabs"]);
   }
 
+  public watchColeccion() {
+    this.setFilter("searchValue", this.firebaseService.modelo[this.coleccion]);
+  }
+
   public setFilter(searchData, data) {
+    this.swFind = true;
     const searchValue = document.querySelector("ion-searchbar").value;
     console.log("Filter", searchData, searchValue);
-    this.swFind = true;
     this.items = data.filter(item => {
       let searchText = item.titulo + item.idClassification + item.municipio;
       return searchText.toLowerCase().indexOf(searchValue.toLowerCase()) > -1;
     });
     this.swFind = false;
-  }
-
-  public watchColeccion() {
-    this.setFilter("searchValue", this.firebaseService.modelo[this.coleccion]);
   }
 
   public setSort(item) {

@@ -15,17 +15,22 @@
 </ion-header>
 
 <ion-content padding class="tema-app">
-  <!-- -->
-  <div *ngIf="this.firebaseService.modelo['acciones'] == 0">
-    <ion-item>No hay acciones.</ion-item>
-  </div>
-  <!-- -->
-  <ion-grid>
+  <!-- <ion-searchbar> -->
+    <div *ngIf="this.firebaseService.modelo[coleccion] == 0">
+      <ion-item>No hay información</ion-item>
+    </div>
+    <ion-searchbar id="searchAcciones"
+      mode="md"
+      [(ngModel)]="searchData"
+      (ionInput)="setFilter(searchData, firebaseService.modelo[coleccion])"
+    ></ion-searchbar>
+    <div *ngIf="swFind" class="spinner-container">
+      <ion-spinner></ion-spinner>
+    </div>
+    <!-- </ion-searchbar> -->
+    <ion-grid>
     <div
-      *ngFor="
-        let item of this.firebaseService.modelo['acciones'];
-        even as isEven
-      "
+      *ngFor="let item of items; first as isFirst; even as isEven"
       (click)="selectRow($event, item)"
       text-wrap
     >
