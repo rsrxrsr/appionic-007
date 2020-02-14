@@ -81,17 +81,38 @@
       <ion-row>
         <ion-col size="12">
           <ion-item color="light">
-            <ion-label stacked>Clasificación</ion-label>
-            <ion-select name="clasificacion" [(ngModel)]="doc.idClassification" required>
+            <ion-label stacked>Categoría</ion-label>
+            <ion-select name="categoria" required
+              [(ngModel)]="modelo.categoria"
+            >
               <ion-select-option
                 *ngFor="let opcion of firebaseService.modelo['clases']"
-                [value]="opcion.clase"
+                [value]="opcion"
                 >{{ opcion.clase }}
               </ion-select-option>
             </ion-select>
           </ion-item>
         </ion-col>
       </ion-row>
+
+      <ion-row>
+        <ion-col size="12">
+          <ion-item color="light">
+            <ion-label stacked>Subcategoría</ion-label>
+            <ion-select name="subcategoria" required
+              [(ngModel)]="modelo.categoria.subcategoria" 
+              (ionChange)="setIdCategoria('clases')"
+            >
+              <ion-select-option
+                *ngFor="let opcion of modelo.categoria['clases']"
+                [value]="opcion"
+                >{{ opcion.clase }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+
       <ion-row>
         <ion-col size="12">
           <ion-item color="light">

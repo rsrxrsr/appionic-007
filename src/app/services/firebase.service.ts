@@ -15,6 +15,7 @@ import { HttpClient } from '@angular/common/http';
 export class FirebaseService {
 //-------------------------------------------------------------------------------------------------------------------
   public modelo=[];
+  public model=[];
   constructor(
               public http: HttpClient,
               public afs: AngularFirestore,
@@ -145,6 +146,20 @@ export class FirebaseService {
     })
   }
 
+  public getCollection(coleccion: string){
+    return new Promise<any>((resolve, reject) => {
+      this.afs.collection(coleccion).snapshotChanges().subscribe(querySnapshot => {
+        var snapshot = {};
+        querySnapshot. forEach(function(doc) {
+          snapshot[doc.payload.doc.id]=doc.payload.doc.data();
+        });
+        console.log("Consulta: ", coleccion, snapshot );
+        this.model[coleccion]=snapshot;
+        resolve(snapshot);
+      })      
+    })
+  }
+
   public getColeccion(coleccion: string){
     return new Promise<any>((resolve, reject) => {
       this.afs.collection(coleccion).snapshotChanges().subscribe(querySnapshot => {
@@ -240,12 +255,12 @@ export class FirebaseService {
     });
   }
 
-  public findAcciones(coleccion: string, campo:string, operador, value){
+  public findAcciones(coleccion: string, componente:any){
     return new Promise<any>((resolve, reject) => {
       let idObservador=this["usuario"].id;
       let region=this["usuario"].region;
       console.log(idObservador,region)
-      this.afs.collection(coleccion, ref => ref.where(campo, operador, value))
+      this.afs.collection(coleccion, ref => ref.where("estatus", "==", "Activo"))
         .snapshotChanges().subscribe(querySnapshot => {
           var snapshot = [];
           querySnapshot. forEach(function(doc) {
@@ -258,6 +273,7 @@ export class FirebaseService {
           });
           console.log("Consulta: ", coleccion, snapshot );
           this.modelo[coleccion]=snapshot;
+          componente.watchColeccion();
           resolve(snapshot);
         })     
     });

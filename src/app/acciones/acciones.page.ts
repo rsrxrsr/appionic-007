@@ -27,7 +27,7 @@ export class AccionesPage implements OnInit {
 
   ngOnInit() {
     console.log("ngOninit:findAcciones")
-    this.firebaseService.findAcciones(this.coleccion, "estatus","==","Activo")
+    this.firebaseService.findAcciones(this.coleccion, this)
     .then(snap => {
       this.items = this.firebaseService.modelo[this.coleccion].slice();
     });
@@ -38,6 +38,10 @@ export class AccionesPage implements OnInit {
     console.log("Item",item);
     item=JSON.stringify(item);
     this.router.navigate(["/accion",item]);
+  }
+
+  public watchColeccion() {
+    this.setFilter("searchValue", this.firebaseService.modelo[this.coleccion]);
   }
 
   public setFilter(searchData, data) {

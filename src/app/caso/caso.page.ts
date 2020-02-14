@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit,  ViewChild } from '@angular/core';
+import { Router} from '@angular/router';
 import { NavController, NavParams, AlertController, MenuController } from '@ionic/angular';
 
 import {FirebaseService} from '../services/firebase.service';
@@ -10,8 +10,10 @@ import { NativeGeocoder, NativeGeocoderOptions, NativeGeocoderResult } from '@io
   templateUrl: './caso.page.html',
   styleUrls: ['./caso.page.scss'],
 })
+
 export class CasoPage implements OnInit {
-  modelo={estado:{regiones:[]},municipio:{regiones:[]}};
+
+  modelo={estado:{regiones:[]},municipio:{regiones:[]},categoria:{clases:[],subcategoria:{clases:[]}}};
   coleccion="caso";
   isUpdate=false; 
   doc = {id:"",dateCreation: new Date().toISOString(),idCase:"",titulo:"",idClassification:"",riesgo:"",impacto:"",description:"",municipio:"",address:"",estatus:"Activo"};
@@ -49,12 +51,13 @@ export class CasoPage implements OnInit {
           })
       })
     }
-    this.firebaseService.consultarColeccion("clases");
+    this.getCategorias()
     //this.getRegiones("regiones")
     this.doc["idRegion"]="regiones/mYB9TZez4ys9WGHJbHJy/regiones/LsyugJFENlqSo8ZQc2iq"
     this.doc.municipio="CdMx/Miguel Hidalgo"
     console.log("init doc", this.doc);
   }
+
 /*
   public registrar() {
     this.firebaseService.addDocumentGetId(this.coleccion, this.doc)
@@ -119,6 +122,60 @@ export class CasoPage implements OnInit {
     await alert.present();
   }
 
+  getCategorias() {
+    let promises:any=[];
+    this.firebaseService.consultarColeccion("clases")
+    .then(snap1=>{
+      snap1.forEach(element => {
+        promises.push(this.firebaseService.consultarColeccion("clases/"+element.id+"/clases"))
+      })
+      Promise.all(promises)
+      .then((result) => {console.log("todas las peticiones resueltas", result)
+        snap1.forEach((element,index) => {
+          element["clases"]=result[index];
+        })
+        if (this.isUpdate) {
+          this.setCategorias(this.doc.idClassification)
+        }       
+      })
+    });
+    /*
+    this.firebaseService.consultarColeccion("clases")
+    .then(snap1=>snap1.forEach(element => {
+      this.firebaseService.consultarColeccion("clases/"+element.id+"/clases")
+      .then(snap2=>element["clases"]=snap2)
+    }));
+    */  
+  }
+
+  setCategorias(idCategoria) {
+    console.log("setIdCategoria", idCategoria);
+    let coleccion="clases";
+    if (!idCategoria) return;
+    let idx = idCategoria.split("/");
+    let idxCategoria=null;
+    this.firebaseService.modelo[coleccion].filter((element,index)=>{
+      if (element.id==idx[1]) {
+        idxCategoria=index;
+        this.modelo.categoria=element;
+        return true;
+      }      
+    });    
+    console.log("setSub", idxCategoria);
+    this.firebaseService.modelo[coleccion][idxCategoria][coleccion].filter((element,index)=>{
+      if (element.id==idx[3]) {
+         this.modelo.categoria.subcategoria=element;
+         return true;
+      }      
+    });
+  }
+
+  setIdCategoria(coleccion) {
+    let ref:string = coleccion+"/"+this.modelo.categoria["id"]+"/"+coleccion+"/"+this.modelo.categoria.subcategoria["id"];
+    this.doc.idClassification=ref;
+    console.log("setIdCategoria",this.doc.idClassification)
+  }
+  /*
   getRegiones(coleccion) {
     console.log('Consultar');
   //this.firebaseService.consultarColecciones(coleccion);
@@ -178,7 +235,9 @@ export class CasoPage implements OnInit {
     this.doc["idRegion"]=ref;
     this.doc["municipio"]=this.modelo.estado["region"]+"/"+this.modelo["municipio"]["nombre"];
   }
+  */
 
+  //
   getGeoencoder(latitude,longitude){  
     //Return Comma saperated address
     function generateAddress(addressObj){

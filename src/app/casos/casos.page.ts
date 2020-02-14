@@ -23,11 +23,14 @@ export class CasosPage implements OnInit {
     if (!this.firebaseService["usuario"]) {
       this.router.navigate(["/login"]);
       return;
-    } 
+    }
   }
 
   ngOnInit() {
-    this.firebaseService.watchColeccion(this.coleccion, this).then(snap => {
+    this.firebaseService.getCollection("clases")
+    .then(()=>
+    this.firebaseService.watchColeccion(this.coleccion, this) )
+    .then(snap => {
       this.items = this.firebaseService.modelo[this.coleccion].slice();
     });
     console.log(this.items);
@@ -38,6 +41,12 @@ export class CasosPage implements OnInit {
     this.firebaseService.modelo["casoEntity"] = item;
     console.log("Item", this.firebaseService.modelo["casoEntity"]);
     this.router.navigate(["/tabs"]);
+  }
+
+  getCategoria(ref) {
+    if (!ref || !this.firebaseService.model["clases"]) return "-";
+    let idx = ref.split("/")
+    return this.firebaseService.model["clases"][idx[1]]["clase"] 
   }
 
   public watchColeccion() {
